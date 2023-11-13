@@ -50,6 +50,10 @@ Route::prefix('administrator')->middleware(['auth', 'verified'])->group(function
     Route::get('/messages', function () {
         return view('admin.messages');
     })->name('admin.messages');
+    Route::get('/announcement', function () {
+        return view('admin.announcement');
+    })->name('admin.announcement');
+
 
 });
 
@@ -70,6 +74,15 @@ Route::prefix('guest')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/contact', function () {
         return view('guest.contact');
     })->name('guest.contact');
+    Route::get('/announcement', function () {
+        return view('guest.announcement');
+    })->name('guest.announcement');
+    Route::get('/about', function () {
+        return view('admin.about');
+    })->name('guest.about');
+    Route::get('/resident-satisfaction', function () {
+        return view('guest.satisfaction');
+    })->name('guest.satisfaction');
 
 
 });

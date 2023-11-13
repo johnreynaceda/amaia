@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
         ]);
 
-        User::create([
-            'name' => 'Jane Doe',
-            'email' => 'janedoe@gmail.com',
-            'password' => bcrypt('password'),
-        ]);
+        // User::create([
+        //     'name' => 'Jane Doe',
+        //     'email' => 'janedoe@gmail.com',
+        //     'password' => bcrypt('password'),
+        // ]);
     }
 }

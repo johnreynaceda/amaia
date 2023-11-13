@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->string('civil_status');
             $table->string('nationality');
             $table->string('phone_number');
-            $table->longText('preferred_maailing_address')->nullable();
+            $table->longText('preferred_mailing_address')->nullable();
             $table->date('turn_over_date')->nullable();
             $table->timestamps();
         });

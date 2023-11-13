@@ -12,7 +12,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
     <!-- Scripts -->
 
     <style>
@@ -130,8 +131,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="fill-white text-white  inline-flex items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
-                                        href="">
+                                    <a class="{{ request()->routeIs('admin.announcement') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                        href="{{ route('admin.announcement') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             class="w-5 h-5 md hydrated">
                                             <path

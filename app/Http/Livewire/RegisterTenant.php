@@ -23,6 +23,22 @@ class RegisterTenant extends Component implements Forms\Contracts\HasForms
     public $view_term = false;
 
     public $email, $password, $confirm_password, $type, $unit_number, $lastname, $firstname, $middlename, $date_of_birth, $gender, $civil_status, $nationality, $phone_number;
+
+
+    public $unitNumbers, $roomNames, $availableRoomNumber, $occupiedRoom = [];
+    public function mount()
+    {
+        $this->occupiedRoom = UserInformation::whereHas('user', function ($record) {
+            $record->where('is_accepted', 1);
+        })->pluck('unit_number')->toArray();
+        // dd($this->occupiedRoom);
+        $this->availableRoomNumber = array_values(array_diff(range(1, 912), $this->occupiedRoom));
+
+        $this->roomNames = array_map(function ($number) {
+            return 'Room ' . $number;
+        }, $this->availableRoomNumber);
+    }
+
     protected function getFormSchema(): array
     {
         return [
@@ -39,13 +55,7 @@ class RegisterTenant extends Component implements Forms\Contracts\HasForms
                         ]),
                     Select::make('unit_number')->label('Unit Number')->searchable()
                         ->options(
-                            array_combine(
-                                range(1, 200),
-                                // Generate an array of numbers from 1 to 200
-                                array_map(function ($number) {
-                                    return 'Room ' . $number;
-                                }, range(1, 200)) // Concatenate "room" to each number
-                            )
+                            array_combine($this->availableRoomNumber, $this->roomNames)
                         ),
                 ]),
             Fieldset::make('GUEST INFORMATION')

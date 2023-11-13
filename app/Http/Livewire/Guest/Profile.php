@@ -16,6 +16,14 @@ use Filament\Forms\Components\Toggle;
 class Profile extends Component implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
+
+    public $email, $type, $unit_number;
+    public $lastname, $firstname, $middlename, $date_of_birth, $gender, $civil_status, $nationality, $preffered_address, $turn_over, $phone_number, $allow_notifications;
+
+    public function mount()
+    {
+        $this->allow_notifications = auth()->user()->allow_notification;
+    }
     public function render()
     {
         return view('livewire.guest.profile');
@@ -26,7 +34,7 @@ class Profile extends Component implements Forms\Contracts\HasForms
         return [
             Grid::make(3)
                 ->schema([
-                    TextInput::make('email')->label('Email Address')->email()->disabled()->placeholder(auth()->user()->email),
+                    TextInput::make('email')->label('Email Address')->email()->placeholder(auth()->user()->email),
                     Select::make('type')->label('Resident Type')->disabled()->placeholder(auth()->user()->user_information->resident_type)
                         ->options([
                             'Unit Owner' => 'Unit Owner',
@@ -42,16 +50,16 @@ class Profile extends Component implements Forms\Contracts\HasForms
                 ]),
             Fieldset::make('GUEST INFORMATION')
                 ->schema([
-                    TextInput::make('lastname')->label('Lastname')->disabled()->placeholder(auth()->user()->user_information->lastname),
-                    TextInput::make('firstname')->label('Firtstname')->disabled()->placeholder(auth()->user()->user_information->firstname),
-                    TextInput::make('middlename')->label('Middlename')->disabled()->placeholder(auth()->user()->user_information->middlename),
-                    DatePicker::make('date_of_birth')->disabled()->placeholder(\Carbon\Carbon::parse(auth()->user()->user_information->date_of_birth)->format('F d, Y')),
-                    Select::make('gender')->label('Gender')->disabled()->placeholder(auth()->user()->user_information->gender)
+                    TextInput::make('lastname')->label('Lastname')->placeholder(auth()->user()->user_information->lastname),
+                    TextInput::make('firstname')->label('Firtstname')->placeholder(auth()->user()->user_information->firstname),
+                    TextInput::make('middlename')->label('Middlename')->placeholder(auth()->user()->user_information->middlename),
+                    DatePicker::make('date_of_birth')->placeholder(\Carbon\Carbon::parse(auth()->user()->user_information->date_of_birth)->format('F d, Y')),
+                    Select::make('gender')->label('Gender')->placeholder(auth()->user()->user_information->gender)
                         ->options([
                             'Male' => 'Male',
                             'Female' => 'Female',
                         ]),
-                    Select::make('civil_status')->label('Civil Status')->disabled()->placeholder(auth()->user()->user_information->civil_status)
+                    Select::make('civil_status')->label('Civil Status')->placeholder(auth()->user()->user_information->civil_status)
                         ->options([
                             'Single' => 'Single',
                             'Married' => 'Married',
@@ -59,10 +67,10 @@ class Profile extends Component implements Forms\Contracts\HasForms
                             'Divorceced' => 'Divorced'
                         ]),
 
-                    TextInput::make('nationality')->label('Nationality')->disabled()->placeholder(auth()->user()->user_information->nationality),
-                    Textarea::make('preferred_address')->label('Preferred Mailing Address'),
-                    TextInput::make('turn_over')->label('Turn Over Date'),
-                    TextInput::make('phone_number')->label('Phone Number')->disabled()->placeholder(auth()->user()->user_information->phone_number),
+                    TextInput::make('nationality')->label('Nationality')->placeholder(auth()->user()->user_information->nationality),
+                    Textarea::make('preffered_address')->label('Preferred Mailing Address')->placeholder(auth()->user()->user_information->preferred_mailing_address),
+                    DatePicker::make('turn_over')->placeholder(auth()->user()->user_information->turn_over_date == null ? '' : \Carbon\Carbon::parse(auth()->user()->user_information->turn_over_date)->format('F d, Y')),
+                    TextInput::make('phone_number')->label('Phone Number')->placeholder(auth()->user()->user_information->phone_number),
                     Toggle::make('allow_notifications')->label('Allow Notifications')->inline(false)
                         ->onColor('primary')
                         ->offColor('danger')->onIcon('heroicon-s-bell')
@@ -74,4 +82,30 @@ class Profile extends Component implements Forms\Contracts\HasForms
         ];
     }
 
+    public function submitProfile()
+    {
+        $data = auth()->user();
+        $data->update([
+            'email' => $this->email == null ? auth()->user()->email : $this->email,
+            'allow_notification' => $this->allow_notifications != true ? false : true,
+        ]);
+
+        $data->user_information->update([
+            'lastname' => $this->lastname == null ? auth()->user()->user_information->lastname : $this->lastname,
+            'firstname' => $this->firstname == null ? auth()->user()->user_information->firstname : $this->firstname,
+            'middlename' => $this->middlename == null ? auth()->user()->user_information->middlename : $this->middlename,
+            'date_of_birth' => $this->date_of_birth == null ? auth()->user()->user_information->date_of_birth : $this->date_of_birth,
+            'gender' => $this->gender == null ? auth()->user()->user_information->gender : $this->gender,
+            'civil_status' => $this->civil_status == null ? auth()->user()->user_information->civil_status : $this->civil_status,
+            'nationality' => $this->nationality == null ? auth()->user()->user_information->nationality : $this->nationality,
+            'preferred_mailing_address' => $this->preffered_address == null ? auth()->user()->user_information->preferred_mailing_address : $this->preffered_address,
+            'turn_over_date' => $this->turn_over == null ? auth()->user()->user_information->turn_over_date : $this->turn_over,
+            'phone_number' => $this->phone_number == null ? auth()->user()->user_information->phone_number : $this->phone_number,
+        ]);
+
+        sweetalert()->addSuccess('Profile Updated');
+
+    }
+
 }
+

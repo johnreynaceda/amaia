@@ -20,7 +20,7 @@
                         <nav class="flex-1 space-y-1 bg-white">
                             <ul>
                                 <li>
-                                    <button wire:click="$set('compose', true)"
+                                    {{-- <button wire:click="$set('compose', true)"
                                         class="inline-flex items-center  px-4 py-4 mt-1 text-white fill-white transition duration-200 ease-in-out font-semibold transform bg-[#1c4c4e]  rounded-lg focus:shadow-outline hover:scale-95 hover:text-white"
                                         href="#">
 
@@ -33,7 +33,9 @@
                                         <span class="ml-2">
                                             Compose
                                         </span>
-                                    </button>
+                                    </button> --}}
+                                    <x-button label="Compose" wire:click="compose" icon="pencil-alt" positive spinner
+                                        class="font-bold" />
                                 </li>
 
                             </ul>
@@ -55,8 +57,8 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="inline-flex items-center w-full px-4 py-2 mt-1  text-[#1c4c4e] fill-[#1c4c4e] transition duration-200 ease-in-out font-semibold transform rounded-xl focus:shadow-outline hover:bg-[#1c4c4e]/90 hover:scale-95 hover:text-white hover:fill-white"
+                                <li wire:click="sidebarLink('Sent')">
+                                    <a class="{{ $sidebar == 'Sent' ? 'bg-[#1c4c4e]/90 scale-95 text-white fill-white' : '' }} inline-flex items-center w-full px-4 py-2 mt-1  text-[#1c4c4e] fill-[#1c4c4e] transition duration-200 ease-in-out font-semibold transform rounded-xl focus:shadow-outline hover:bg-[#1c4c4e]/90 hover:scale-95 hover:text-white hover:fill-white"
                                         href="#">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             class="w-5 h-5 md hydrated">
@@ -69,8 +71,8 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="inline-flex items-center w-full px-4 py-2 mt-1  text-[#1c4c4e] fill-[#1c4c4e] transition duration-200 ease-in-out font-semibold transform rounded-xl focus:shadow-outline hover:bg-[#1c4c4e]/90 hover:scale-95 hover:text-white hover:fill-white"
+                                <li wire:click="sidebarLink('All Inbox')">
+                                    <a class="{{ $sidebar == 'All Inbox' ? 'bg-[#1c4c4e]/90 scale-95 text-white fill-white' : '' }} inline-flex items-center w-full px-4 py-2 mt-1  text-[#1c4c4e] fill-[#1c4c4e] transition duration-200 ease-in-out font-semibold transform rounded-xl focus:shadow-outline hover:bg-[#1c4c4e]/90 hover:scale-95 hover:text-white hover:fill-white"
                                         href="#">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             class="w-5 h-5 md hydrated">
@@ -83,8 +85,8 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="inline-flex items-center w-full px-4 py-2 mt-1  text-[#1c4c4e] fill-[#1c4c4e] transition duration-200 ease-in-out font-semibold transform rounded-xl focus:shadow-outline hover:bg-[#1c4c4e]/90 hover:scale-95 hover:text-white hover:fill-white"
+                                <li wire:click="sidebarLink('Trash')">
+                                    <a class="{{ $sidebar == 'Trash' ? 'bg-[#1c4c4e]/90 scale-95 text-white fill-white' : '' }} inline-flex items-center w-full px-4 py-2 mt-1  text-[#1c4c4e] fill-[#1c4c4e] transition duration-200 ease-in-out font-semibold transform rounded-xl focus:shadow-outline hover:bg-[#1c4c4e]/90 hover:scale-95 hover:text-white hover:fill-white"
                                         href="#">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             class="w-5 h-5 md hydrated">
@@ -113,27 +115,40 @@
                             <div class="py-4">
                                 <h1 class="font-bold text-2xl">NEW MESSAGE</h1>
                                 <div class="mt-5 grid grid-cols-3 gap-10">
-                                    <div class="flex flex-col space-y-3">
-                                        <x-native-select label="Lot" wire:model="lot_number">
+                                    {{-- <div class="flex flex-col space-y-3">
+                                        <x-native-select label="Lot" wire:model.defer="lot_number">
 
                                             <option>Select an option</option>
 
-                                            @for ($i = 1; $i <= 200; $i++)
+                                            @for ($i = 1; $i <= 912; $i++)
                                                 <option value="{{ $i }}">Room {{ $i }}</option>
                                             @endfor
 
 
 
                                         </x-native-select>
-                                        <x-native-select label="Label Type" wire:model="model">
+                                        <x-native-select label="Label Type" wire:model.defer="label">
                                             <option>Select an Option</option>
-                                            <option>Noise</option>
-                                            <option>Trash</option>
-                                            <option>Security</option>
-                                            <option>Boundaries</option>
-                                            <option>Rule Violation</option>
+                                            <option value="Complaint">Complaint</option>
+                                            <option value="Concerns">Concerns</option>
+                                            <option value="Maintenance">Maintenance</option>
+                                            <option value="Amenity">Amenity</option>
+                                            <option value="Package">Package</option>
                                         </x-native-select>
-                                        <x-input label="Subject" placeholder="subject of the message" />
+                                        <x-native-select label="Nature of Complaints" wire:model.defer="complaint">
+                                            <option>Select an Option</option>
+                                            <option value="Noise">Noise</option>
+                                            <option value="Trash">Trash</option>
+                                            <option value="Security">Security</option>
+                                            <option value="Boundaries">Boundaries</option>
+                                            <option value="Rule Violation">Rule Violation</option>
+
+                                        </x-native-select>
+                                        <x-input label="Subject" wire:model.defer="subject"
+                                            placeholder="subject of the message" />
+                                    </div> --}}
+                                    <div>
+                                        {{ $this->form }}
                                     </div>
                                     <div class="col-span-2 grid grid-cols-2 gap-4">
                                         <div>
@@ -156,7 +171,8 @@
                                         </div>
                                     </div>
                                     <div class="col-span-3 bg-gray-300 p-3 rounded-lg">
-                                        <x-textarea label="Compose a Message" placeholder="write your message" />
+                                        <x-textarea label="Compose a Message" wire:model.defer="message"
+                                            placeholder="write your message" />
                                         @if ($attachment)
                                             <span class="pl-2">Attachment:</span>
                                             <div class="p-2">
@@ -167,7 +183,8 @@
                                             </div>
                                         @endif
                                         <div class=" flex space-x-2  pt-2 items-center">
-                                            <x-button label="SEND" dark right-icon="inbox-in" />
+                                            <x-button label="SEND" wire:click="sendMessage" spinner="sendMessage" dark
+                                                right-icon="inbox-in" />
                                             <x-button label="Attach File" id="fileInputButton" dark icon="paper-clip" />
                                             <input id="fileInput" wire:model="attachment" type="file"
                                                 style="display: none;">
@@ -198,7 +215,24 @@
                             </div>
                         @else
                             <div class="py-4">
-                                {{ $this->table }}
+
+                                <div class="mt-3">
+                                    @switch($sidebar)
+                                        @case('All Inbox')
+                                            {{ $this->table }}
+                                        @break
+
+                                        @case('Trash')
+                                            <livewire:admin.trash-list />
+                                        @break
+
+                                        @case('Sent')
+                                            <livewire:admin.sent-list />
+                                        @break
+
+                                        @default
+                                    @endswitch
+                                </div>
                             </div>
                         @endif
                         <!-- === End ===  -->

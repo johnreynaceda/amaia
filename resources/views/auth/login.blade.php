@@ -131,10 +131,7 @@
                                     the form
                                     provided.</span>
                                 <div class="mt-3 flex space-x-3 justify-center 2xl:justify-start items-center">
-                                    <x-button md label="Gate Pass" icon="document-text" class="font-semibold"
-                                        positive />
-                                    <x-button md label="Visitor Pass" icon="document-text" class="font-semibold"
-                                        positive />
+                                    <livewire:pass-request />
                                 </div>
                             </div>
                         </div>

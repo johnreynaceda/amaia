@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Message;
 use Livewire\Component;
 
 use App\Models\Maintenance;
@@ -86,6 +87,18 @@ class MaintenanceRequestList extends Component implements Tables\Contracts\HasTa
                         $record->update([
                             'status' => 'approved',
                         ]);
+
+                        $message = Message::create([
+                            'user_id' => auth()->user()->id,
+                            'resident_name' => $record->user->name,
+                            'receiver_id' => $record->user_id,
+                            'complainee_unit' => $record->user->user_information->unit_number,
+                            'label_type' => 'Maintenance',
+                            // 'nature_of_complaint' => $this->complaint,
+                            'subject' => 'null',
+                            'message' => 'Your Maintenance (' . Maintenance::Where('id', $record->maintenance_id)->first()->name . ') request for UNIT ' . $record->user->user_information->unit_number . ' is approved by Admin. To proceed, please settle the amount on the lobby.',
+                        ]);
+
                         sweetalert()->addSuccess('Request approved');
                     }
                 )->visible(

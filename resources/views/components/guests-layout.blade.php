@@ -11,6 +11,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
     @wireUiScripts
     <!-- Scripts -->
     <style>
@@ -21,7 +24,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @livewireScripts
-    @stack('scripts')
+
 </head>
 
 <body class="font-sans antialiased relative" x-data="app()">
@@ -39,7 +42,14 @@
                             <img src="{{ asset('images/amaia_logo.png') }}" class="h-8" alt="">
                         </a>
                         <div class="flex space-x-1 items-center">
-                            <a href="{{ route('guest.inbox') }}" class="2xl:hidden group">
+                            <a href="{{ route('guest.inbox') }}" class="2xl:hidden relative  group">
+                                <div class="absolute -top-2 -left-2">
+                                    @if (\App\Models\Message::where('receiver_id', auth()->user()->id)->whereNull('read_at')->count() > 0)
+                                        <x-badge
+                                            label="{{ \App\Models\Message::where('receiver_id', auth()->user()->id)->whereNull('read_at')->count() }}"
+                                            2xs negative />
+                                    @endif
+                                </div>
                                 <svg class="w-8 h-8 group-hover:text-red-500 text-[#1c4c4e]"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     aria-hidden="true">
@@ -80,7 +90,14 @@
 
 
                         <div class="inline-flex items-center mt-3 2xl:mt-0 gap-2 list-none lg:ml-auto">
-                            <a href="{{ route('guest.inbox') }}" class="2xl:block hidden group">
+                            <a href="{{ route('guest.inbox') }}" class="2xl:block relative hidden group">
+                                <div class="absolute -top-2 -left-2">
+                                    @if (\App\Models\Message::where('receiver_id', auth()->user()->id)->whereNull('read_at')->count() > 0)
+                                        <x-badge
+                                            label="{{ \App\Models\Message::where('receiver_id', auth()->user()->id)->whereNull('read_at')->count() }}"
+                                            2xs negative />
+                                    @endif
+                                </div>
                                 <svg class="w-8 h-8 group-hover:text-red-500 text-[#1c4c4e]"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     aria-hidden="true">
@@ -113,11 +130,12 @@
                     Profile</a>
                 <a href="{{ route('guest.requests') }}"
                     class="{{ request()->routeIs('guest.requests') ? 'text-[#1c4c4e] font-semibold underline' : 'text-gray-700' }} font-medium  hover:text-[#1c4c4e] hover:font-semibold">Requests</a>
-                <a href=""
-                    class="font-medium text-gray-700 hover:text-[#1c4c4e] hover:font-semibold">Announcements</a>
+                <a href="{{ route('guest.announcement') }}"
+                    class="{{ request()->routeIs('guest.announcement') ? 'text-[#1c4c4e] font-semibold underline' : 'text-gray-700' }} font-medium text-gray-700 hover:text-[#1c4c4e] hover:font-semibold">Announcements</a>
                 <a href="{{ route('guest.contact') }}"
-                    class="{{ request()->routeIs('guest.contact') ? 'text-[#1c4c4e] font-semibold underline' : 'text-gray-700' }} font-medium  hover:text-[#1c4c4e] hover:font-semibold">Contact</a>
-                <a href="" class="font-medium text-gray-700 hover:text-[#1c4c4e] hover:font-semibold">About</a>
+                    class="{{ request()->routeIs('guest.announcement') ? 'text-[#1c4c4e] font-semibold underline' : 'text-gray-700' }} font-medium  hover:text-[#1c4c4e] hover:font-semibold">Contact</a>
+                <a href="{{ route('guest.about') }}"
+                    class=" {{ request()->routeIs('guest.about') ? 'text-[#1c4c4e] font-semibold underline' : 'text-gray-700' }} font-medium text-gray-700 hover:text-[#1c4c4e] hover:font-semibold">About</a>
             </div>
         </div>
         <div class="relative p-2 py-5 mx-auto 2xl:max-w-7xl">
@@ -173,7 +191,8 @@
                         </path>
                     </svg>
                 </a>
-                <div class="hover:bg-white hover:text-[#1c4c4e] text-white rounded-3xl grid place-content-center h-14">
+                <a href="{{ route('guest.announcement') }}"
+                    class="{{ request()->routeIs('guest.announcement') ? 'bg-white text-[#1c4c4e]' : 'text-white ' }} hover:bg-white hover:text-[#1c4c4e] rounded-3xl grid place-content-center h-14">
                     <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                         fill="currentColor" aria-hidden="true">
                         <path d="M19 8a3 3 0 100-6 3 3 0 000 6z"></path>
@@ -184,7 +203,7 @@
                             d="M11.75 14h-5c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h5c.41 0 .75.34.75.75s-.34.75-.75.75zM15.75 18h-9c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h9c.41 0 .75.34.75.75s-.34.75-.75.75z">
                         </path>
                     </svg>
-                </div>
+                </a>
                 <div class="hover:bg-white hover:text-[#1c4c4e] text-white rounded-3xl grid place-content-center h-14">
                     <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                         fill="currentColor" aria-hidden="true">
@@ -255,6 +274,7 @@
         </div>
 
     </div>
+    @stack('scripts')
 </body>
 
 </html>

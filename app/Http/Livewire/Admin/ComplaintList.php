@@ -30,7 +30,7 @@ class ComplaintList extends Component implements Tables\Contracts\HasTable
     {
         return [
             TextColumn::make('description')->label('DESCRIPTION')->searchable(),
-            TextColumn::make('user.user_information.unit_number')->label('COMPLAINEE')->searchable(),
+            TextColumn::make('user.user_information.unit_number')->label('COMPLAINEE UNIT')->searchable(),
             TextColumn::make('type')->label('NATURE OF COMPLAINT')->searchable()->weight('bold')->formatStateUsing(
                 function ($record) {
                     return strtoupper($record->type);
@@ -78,7 +78,7 @@ class ComplaintList extends Component implements Tables\Contracts\HasTable
                         function ($record) {
                             $record->update([
                                 'status' => 'completed',
-                                'date_completed' => now(),
+                                'completed_date' => now(),
                             ]);
                             sweetalert()->addSuccess('Request completed');
                         }

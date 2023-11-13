@@ -59,8 +59,8 @@ class PassList extends Component implements Tables\Contracts\HasTable
         return [
             Tables\Actions\EditAction::make()->action(
                 function ($record, $data) {
-                    $record->lupdate([
-                        'name' => $record['name'],
+                    $record->update([
+                        'name' => $data['name'],
                     ]);
                     sweetalert()->addSuccess('Pass has been updated');
                 }
