@@ -33,10 +33,15 @@ class MessageList extends Component implements Tables\Contracts\HasTable
     public $attachment;
     public $label_type = 'Complaint';
     public $sidebar = 'All Inbox';
+    public $attachment_image;
+    public $view_modal = false;
+    public $has_attachment = false;
+
+    public $message_data;
 
     protected function getTableQuery(): Builder
     {
-        return Message::query()->where('receiver_id', auth()->user()->id)->where('status', '!=', 'deleted');
+        return Message::query()->where('receiver_id', auth()->user()->id)->where('status', '!=', 'deleted')->orderBy('created_at', 'DESC');
     }
 
     protected function getTableColumns(): array
@@ -119,12 +124,10 @@ class MessageList extends Component implements Tables\Contracts\HasTable
                 'message' => $this->message,
             ]);
 
-            foreach ($this->attachment as $key => $value) {
-                MessageAttachment::create([
-                    'message_id' => $message->id,
-                    'file_path' => $value->store('message_attachment', 'public'),
-                ]);
-            }
+            MessageAttachment::create([
+                'message_id' => $message->id,
+                'file_path' => $this->attachment->store('message_attachment', 'public'),
+            ]);
 
             $this->compose = false;
             sweetalert()->addSuccess('Message Sent');
@@ -163,6 +166,22 @@ class MessageList extends Component implements Tables\Contracts\HasTable
     {
         return [
             Tables\Actions\ActionGroup::make([
+
+                Tables\Actions\Action::make('view')->label('View Message')->icon('heroicon-o-eye')->color('warning')->action(
+                    function ($record) {
+                        $record->update([
+                            'read_at' => now(),
+                        ]);
+                        if (MessageAttachment::where('message_id', $record->id)->count() > 0) {
+                            $this->attachment_image = MessageAttachment::where('message_id', $record->id)->first()->file_path;
+                        }
+                        $this->message_data = $record;
+                        $this->view_modal = true;
+
+
+                    }
+                ),
+
                 Tables\Actions\Action::make('complete')->label('Completed')->icon('heroicon-o-check')->visible(
                     function ($record) {
                         return $record->date_completed == null;

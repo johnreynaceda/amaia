@@ -83,7 +83,7 @@
 
                     <x-button flat label="Cancel" x-on:click="close" />
 
-                    <x-button dark label="Sumbit" wire:click="submitGatePass" spinner="submitGatePass" />
+                    <x-button dark label="Submit" wire:click="submitGatePass" spinner="submitGatePass" />
 
                 </div>
 
@@ -163,7 +163,7 @@
 
                     <x-button flat label="Cancel" x-on:click="close" />
 
-                    <x-button dark label="Sumbit" wire:click="submitVisitorPass" spinner="submitVisitorPass" />
+                    <x-button dark label="Submit" wire:click="submitVisitorPass" spinner="submitVisitorPass" />
 
                 </div>
 

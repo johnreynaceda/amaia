@@ -20,6 +20,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
 
 class MaintenanceRequestList extends Component implements Tables\Contracts\HasTable
 {
@@ -34,11 +35,7 @@ class MaintenanceRequestList extends Component implements Tables\Contracts\HasTa
     protected function getTableQuery(): Builder
     {
 
-        return MaintenanceRequest::query()->whereHas('user', function ($user) {
-            $user->whereHas('user_information', function ($record) {
-                $record->where('unit_number', $this->unitNumber);
-            });
-        });
+        return MaintenanceRequest::query()->orderBy('status');
 
     }
 
@@ -56,7 +53,7 @@ class MaintenanceRequestList extends Component implements Tables\Contracts\HasTa
                 function ($record) {
                     return \Carbon\Carbon::parse($record->preffered_time)->format('H:i A');
                 }
-            )->searchable()->sortable(),
+            ),
             BadgeColumn::make('status')->label('STATUS')
                 ->enum([
                     'pending' => 'Pending',
@@ -67,17 +64,28 @@ class MaintenanceRequestList extends Component implements Tables\Contracts\HasTa
                         'success' => 'approved',
                         'primary' => 'completed'
                     ])->sortable(),
-            TextColumn::make('amount')->label('AMOUNT')->searchable()->formatStateUsing(
+            TextColumn::make('amount')->label('AMOUNT')->formatStateUsing(
                 function ($record) {
                     return '₱' . number_format($record->amount, 2);
                 }
             )->sortable(),
-            TextColumn::make('date_completed')->label('COMPLETED DATE')->date()->searchable()->sortable(),
+            TextColumn::make('date_completed')->label('COMPLETED DATE')->date()->sortable(),
 
         ];
 
     }
 
+    protected function getTableFilters(): array
+    {
+        return [
+            SelectFilter::make('status')->label('STATUS')
+                ->options([
+                    'pending' => 'Pending',
+                    'approved' => 'Approved',
+                    'completed' => 'Completed',
+                ])
+        ];
+    }
     protected function getTableActions(): array
     {
         return [

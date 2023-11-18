@@ -280,7 +280,9 @@
                             fill="currentColor"></path>
                     </svg>
                     <div>
-                        <h1 class="2xl:text-4xl font-bold text-white">Move-Out Inspection Pass</h1>
+                        <a href="https://forms.gle/UDzEp1XsRCpcgA1Y9" target="_blank"
+                            class="2xl:text-4xl font-bold hover:text-gray-200 text-white">Move-Out
+                            Inspection Pass</a>
                         <p class=" 2xl:text-lg text-sm text-[#1C4C4E]">
                             A checklist used during move-in and move-out to document the condition of the unit and any
                             existing damages.

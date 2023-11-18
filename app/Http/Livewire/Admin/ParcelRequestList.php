@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Message;
 use App\Models\PassRequest;
 use Livewire\Component;
 use App\Models\Maintenance;
@@ -18,6 +19,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
 
 class ParcelRequestList extends Component implements Tables\Contracts\HasTable
 {
@@ -35,13 +37,21 @@ class ParcelRequestList extends Component implements Tables\Contracts\HasTable
     {
 
         return PassRequest::query()->whereHas('pass', function ($record) {
-            $record->where('name', 'like', '%' . 'Parcel Pass' . '%');
-        })->whereHas('user', function ($record) {
-            $record->whereHas('user_information', function ($record) {
-                $record->where('unit_number', $this->unitNumber);
-            });
-        });
+            $record->where('name', 'like', 'Parcel Pass');
+        })->orderByDesc('status');
 
+    }
+
+    protected function getTableFilters(): array
+    {
+        return [
+            SelectFilter::make('status')->label('STATUS')
+                ->options([
+                    'pending' => 'Pending',
+                    'approved' => 'Approved',
+                    'completed' => 'Completed',
+                ])
+        ];
     }
 
     protected function getTableColumns(): array
@@ -77,6 +87,20 @@ class ParcelRequestList extends Component implements Tables\Contracts\HasTable
                         $record->update([
                             'status' => 'approved',
                         ]);
+                        if ($record->user_id != null) {
+                            $message = Message::create([
+                                'user_id' => auth()->user()->id,
+                                'resident_name' => UserInformation::where('unit_number', $record->unit)->first()->user->name,
+                                'receiver_id' => UserInformation::where('unit_number', $record->unit)->first()->user->id,
+                                'complainee_unit' => $record->unit,
+                                'label_type' => 'Pass',
+                                // 'nature_of_complaint' => $this->complaint,
+                                'subject' => 'null',
+                                'message' => 'Your Parcel Pass request for UNIT ' . $record->user->user_information->unit_number . ' is approved by Admin. To proceed, please settle the amount on the lobby.',
+                            ]);
+                        } else {
+
+                        }
                         sweetalert()->addSuccess('Request approved');
                     }
                 )->visible(

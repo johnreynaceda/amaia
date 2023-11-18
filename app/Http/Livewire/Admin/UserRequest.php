@@ -29,16 +29,14 @@ class UserRequest extends Component implements Tables\Contracts\HasTable
         return [
             Grid::make(3)
                 ->schema([
-                    Select::make('unit_number')->label('Requesting Unit')->searchable()->reactive()
-                        ->options(
-                            array_combine(
-                                range(1, 200),
-                                // Generate an array of numbers from 1 to 200
-                                array_map(function ($number) {
-                                    return 'Room ' . $number;
-                                }, range(1, 200)) // Concatenate "room" to each number
-                            )
-                        ),
+                    Select::make('request')->label('Type of Request')->searchable()->reactive()
+                        ->options([
+                            1 => 'Maintenance',
+                            2 => 'Amenities',
+                            3 => 'Gate Pass',
+                            4 => 'Visitor Pass',
+                            5 => 'Parcel Pass',
+                        ])
                 ])
 
         ];

@@ -17,14 +17,21 @@ use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Actions\Action;
+use Livewire\WithFileUploads;
 
 // use Illuminate\Contracts\View\View;
 
 class InboxList extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
+    use WithFileUploads;
 
     public $compose_modal = false;
+    public $view_modal = false;
+    public $has_attachment = false;
+
+    public $message_data;
+    public $attachment_image;
     public $sort = "All";
     public $attachment, $label, $message, $subject, $complaint;
     public function render()
@@ -76,6 +83,11 @@ class InboxList extends Component implements Tables\Contracts\HasTable
                     $record->update([
                         'read_at' => now(),
                     ]);
+                    if (MessageAttachment::where('message_id', $record->id)->count() > 0) {
+                        $this->attachment_image = MessageAttachment::where('message_id', $record->id)->first()->file_path;
+                    }
+                    $this->message_data = $record;
+                    $this->view_modal = true;
 
 
                 }
@@ -94,8 +106,15 @@ class InboxList extends Component implements Tables\Contracts\HasTable
         ];
     }
 
+    public function closeModal()
+    {
+        $this->view_modal = false;
+        return redirect()->route('guest.inbox');
+    }
+
     public function sendMessage()
     {
+        // dd($this->attachment);
         $this->validate([
             'label' => 'required',
             'subject' => 'required',
@@ -115,14 +134,13 @@ class InboxList extends Component implements Tables\Contracts\HasTable
                 'message' => $this->message,
             ]);
 
-            foreach ($this->attachment as $key => $value) {
-                MessageAttachment::create([
-                    'message_id' => $message->id,
-                    'file_path' => $value->store('message_attachment', 'public'),
-                ]);
-            }
+            MessageAttachment::create([
+                'message_id' => $message->id,
+                'file_path' => $this->attachment->store('message_attachment', 'public'),
+            ]);
 
             $this->compose_modal = false;
+            $this->reset('subject', 'message', 'label', 'complaint', 'attachment');
             sweetalert()->addSuccess('Message Sent');
 
 
@@ -140,6 +158,7 @@ class InboxList extends Component implements Tables\Contracts\HasTable
             ]);
 
             $this->compose_modal = false;
+            $this->reset('subject', 'message', 'label', 'complaint', 'attachment');
             sweetalert()->addSuccess('Message Sent');
         }
     }

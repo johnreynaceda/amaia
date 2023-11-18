@@ -1,6 +1,7 @@
 <div x-animate>
     <div class="bg-white p-5 rounded-xl bg-opacity-80">
         <div>{{ $this->form }}</div>
+        {{-- {{ $request }}
         @if ($requestor_data != null)
             <div class="mt-5 bg-[#1c4c4e] bg-opacity-20 rounded-xl p-5 px-10">
                 <div class="grid grid-cols-4 gap-1">
@@ -45,7 +46,9 @@
                 </div>
                 <x-button.circle teal spinner icon="refresh" />
             </div>
+        @endif --}}
 
+        <div x-animate>
             @if ($request == 1)
                 <div class="mt-5">
                     <livewire:admin.maintenance-request-list :unitNumber="$unit_number" />
@@ -71,6 +74,6 @@
                     <livewire:admin.parcel-request-list :unitNumber="$unit_number" />
                 </div>
             @endif
-        @endif
+        </div>
     </div>
 </div>

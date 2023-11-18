@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Amenity;
+use App\Models\Message;
 use Livewire\Component;
 use App\Models\Maintenance;
 use App\Models\AmenityRequest;
@@ -17,7 +19,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\TextInput;
-
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\ViewColumn;
 
 class AmenityRequestList extends Component implements Tables\Contracts\HasTable
@@ -35,12 +37,20 @@ class AmenityRequestList extends Component implements Tables\Contracts\HasTable
     protected function getTableQuery(): Builder
     {
 
-        return AmenityRequest::query()->whereHas('user', function ($user) {
-            $user->whereHas('user_information', function ($record) {
-                $record->where('unit_number', $this->unitNumber);
-            });
-        });
+        return AmenityRequest::query()->orderByDesc('status');
 
+    }
+
+    protected function getTableFilters(): array
+    {
+        return [
+            SelectFilter::make('status')->label('STATUS')
+                ->options([
+                    'pending' => 'Pending',
+                    'approved' => 'Approved',
+                    'completed' => 'Completed',
+                ])
+        ];
     }
 
     protected function getTableColumns(): array
@@ -52,12 +62,12 @@ class AmenityRequestList extends Component implements Tables\Contracts\HasTable
                     return 'Room ' . ($record->user->user_information->unit_number);
                 }
             )->sortable(),
-            TextColumn::make('request_date')->label('REQUESTED DATE')->date()->searchable()->sortable(),
+            TextColumn::make('request_date')->label('REQUESTED DATE')->date()->sortable(),
             TextColumn::make('preffered_time')->label('PREFFERED TIME')->formatStateUsing(
                 function ($record) {
                     return \Carbon\Carbon::parse($record->preffered_time)->format('H:i A');
                 }
-            )->searchable()->sortable(),
+            )->sortable(),
             BadgeColumn::make('status')->label('STATUS')
                 ->enum([
                     'pending' => 'Pending',
@@ -68,12 +78,12 @@ class AmenityRequestList extends Component implements Tables\Contracts\HasTable
                         'success' => 'approved',
                         'primary' => 'completed'
                     ])->sortable(),
-            TextColumn::make('amount')->label('AMOUNT')->searchable()->formatStateUsing(
+            TextColumn::make('amount')->label('AMOUNT')->formatStateUsing(
                 function ($record) {
                     return '₱' . number_format($record->amount, 2);
                 }
             )->sortable(),
-            TextColumn::make('date_completed')->label('COMPLETED DATE')->date()->searchable()->sortable(),
+            TextColumn::make('date_completed')->label('COMPLETED DATE')->date()->sortable(),
             // TextColumn::make('visitor')->label('REGISTERED VISITOR')->formatStateUsing(
             //     function ($record) {
             //         return explode(',', $record->visitors);
@@ -93,6 +103,17 @@ class AmenityRequestList extends Component implements Tables\Contracts\HasTable
                     function ($record) {
                         $record->update([
                             'status' => 'approved',
+                        ]);
+
+                        $message = Message::create([
+                            'user_id' => auth()->user()->id,
+                            'resident_name' => $record->user->name,
+                            'receiver_id' => $record->user_id,
+                            'complainee_unit' => $record->user->user_information->unit_number,
+                            'label_type' => 'Amenity',
+                            // 'nature_of_complaint' => $this->complaint,
+                            'subject' => 'null',
+                            'message' => 'Your Amenity (' . Amenity::Where('id', $record->amenity_id)->first()->name . ') request for UNIT ' . $record->user->user_information->unit_number . ' is approved by Admin. To proceed, please settle the request on the lobby.',
                         ]);
                         sweetalert()->addSuccess('Request approved');
                     }

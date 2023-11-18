@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -44,11 +45,7 @@
                         <div class="flex space-x-1 items-center">
                             <a href="{{ route('guest.inbox') }}" class="2xl:hidden relative  group">
                                 <div class="absolute -top-2 -left-2">
-                                    @if (\App\Models\Message::where('receiver_id', auth()->user()->id)->whereNull('read_at')->count() > 0)
-                                        <x-badge
-                                            label="{{ \App\Models\Message::where('receiver_id', auth()->user()->id)->whereNull('read_at')->count() }}"
-                                            2xs negative />
-                                    @endif
+                                    <livewire:inbox-count />
                                 </div>
                                 <svg class="w-8 h-8 group-hover:text-red-500 text-[#1c4c4e]"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
