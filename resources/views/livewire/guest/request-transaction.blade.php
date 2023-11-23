@@ -25,11 +25,19 @@
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </x-native-select>
+                    @if ($maintenance_id)
+                        <p class="text-xs mt-1">
+                            ({{ \App\Models\Maintenance::where('id', $maintenance_id)->first()->description }})</p>
+                    @endif
                     <p class="text-xs text-red-500">Please be notified with our message for transaction updated and your
                         bill.</p>
                 </div>
             </div>
             <div class="mt-5">
+                <div class="pb-2">
+                    <h1 class="font-medium uppercase">available schedule time: </h1>
+                    <h1>7:30 am – 10:00 pm </h1>
+                </div>
                 <h1 class="font-bold text-xl text-center 2xl:text-left text-[#1c4c4e]">Let's fill the details</h1>
                 <div
                     class="mt-3 bg-[#1c4c4e] bg-opacity-80 rounded-lg grid 2xl:grid-cols-4 grid-cols-1 gap-2 py-6 px-2">
@@ -78,6 +86,12 @@
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </x-native-select>
+                    @if ($amenity_type)
+                        <div>
+                            <h1>Description:</h1>
+                            <p>{{ \App\Models\Amenity::where('id', $amenity_type)->first()->description }}</p>
+                        </div>
+                    @endif
                 </div>
                 <div class="2xl:w-72">
                     <h1 class="text-sm text-gray-500">Occasion</h1>
@@ -99,6 +113,10 @@
                 </div>
             </div>
             <div class="mt-5">
+                <div class="pb-2">
+                    <h1 class="font-medium uppercase">available schedule time: </h1>
+                    <h1>7:30 am – 10:00 pm </h1>
+                </div>
                 <h1 class="font-bold text-xl text-center 2xl:text-left text-[#1c4c4e]">Let's fill the details</h1>
                 <div
                     class="mt-3 bg-[#1c4c4e] bg-opacity-80 rounded-lg grid 2xl:grid-cols-4 grid-cols-1 gap-2 py-6 px-2">
@@ -223,6 +241,7 @@
                 </div>
             </div>
             <div class="mt-5">
+
                 <h1 class="font-bold text-xl text-center 2xl:text-left text-[#1c4c4e]">Let's fill the details</h1>
                 <div
                     class="mt-3 bg-[#1c4c4e] bg-opacity-80 rounded-lg grid 2xl:grid-cols-4 grid-cols-1 gap-2 py-6 px-2">
@@ -255,7 +274,8 @@
         </div>
         <x-modal blur wire:model.defer="visitor_form" align="center">
             <div>
-                <img src="{{ asset('images/files/') }}" class="2xl:h-[40rem] h-[30rem] " alt="">
+                <img src="{{ asset('images/files/visitor form.png') }}" class="2xl:h-[40rem] h-[30rem] "
+                    alt="">
             </div>
         </x-modal>
         <x-modal blur wire:model.defer="visitor_clause" align="center">

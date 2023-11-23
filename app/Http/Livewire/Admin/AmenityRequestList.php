@@ -122,6 +122,30 @@ class AmenityRequestList extends Component implements Tables\Contracts\HasTable
                             return $record->status == 'pending';
                         }
                     ),
+                Action::make('declined')->label('Declined')->icon('heroicon-o-thumb-down')->action(
+                    function ($record) {
+                        $record->update([
+                            'status' => 'declined',
+                        ]);
+
+                        $message = Message::create([
+                            'user_id' => auth()->user()->id,
+                            'resident_name' => $record->user->name,
+                            'receiver_id' => $record->user_id,
+                            'complainee_unit' => $record->user->user_information->unit_number,
+                            'label_type' => 'Amenity',
+                            // 'nature_of_complaint' => $this->complaint,
+                            'subject' => 'null',
+                            'message' => 'Your Amenity (' . Amenity::Where('id', $record->amenity_id)->first()->name . ') request for UNIT ' . $record->user->user_information->unit_number . ' is declined by Admin. For more information, please contact Administrator',
+                        ]);
+                        sweetalert()->addSuccess('Request approved');
+                    }
+                )->visible(
+                        function ($record) {
+                            return $record->status == 'pending';
+                        }
+                    ),
+
                 Action::make('complete')->label('Completed')->icon('heroicon-o-check-circle')->visible(
                     function ($record) {
                         return $record->status == 'approved';

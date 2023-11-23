@@ -59,6 +59,9 @@ class ParcelRequestList extends Component implements Tables\Contracts\HasTable
         return [
             TextColumn::make('pass.name')->label('TYPE')->searchable()->sortable(),
             TextColumn::make('contact_number')->label('CONTACT NUMBER')->searchable()->sortable(),
+            TextColumn::make('user.user_information.unit_number')->label('UNIT #')->searchable()->sortable(),
+            TextColumn::make('purpose')->label('REASON')->searchable()->sortable(),
+
             TextColumn::make('quantity')->label('# OF EXPECTED PARCEL/S')->searchable()->sortable(),
             TextColumn::make('created_at')->label('DATE SUBMITTED')->date()->searchable()->sortable(),
             TextColumn::make('request_date')->label('EXPECTED DATE OF ARRIVAL')->date()->searchable()->sortable(),
@@ -102,6 +105,32 @@ class ParcelRequestList extends Component implements Tables\Contracts\HasTable
 
                         }
                         sweetalert()->addSuccess('Request approved');
+                    }
+                )->visible(
+                        function ($record) {
+                            return $record->status == 'pending';
+                        }
+                    ),
+                Action::make('decline')->label('Declined')->icon('heroicon-o-thumb-down')->color('danger')->action(
+                    function ($record) {
+                        $record->update([
+                            'status' => 'declined',
+                        ]);
+                        if ($record->user_id != null) {
+                            $message = Message::create([
+                                'user_id' => auth()->user()->id,
+                                'resident_name' => UserInformation::where('unit_number', $record->unit)->first()->user->name,
+                                'receiver_id' => UserInformation::where('unit_number', $record->unit)->first()->user->id,
+                                'complainee_unit' => $record->unit,
+                                'label_type' => 'Pass',
+                                // 'nature_of_complaint' => $this->complaint,
+                                'subject' => 'null',
+                                'message' => 'Your Parcel Pass request for UNIT ' . $record->user->user_information->unit_number . ' is declined by Admin. For more information, please contact the administrator',
+                            ]);
+                        } else {
+
+                        }
+                        sweetalert()->addSuccess('Request declined');
                     }
                 )->visible(
                         function ($record) {

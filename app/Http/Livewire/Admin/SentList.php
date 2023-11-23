@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\MessageAttachment;
 use Livewire\Component;
 use App\Models\Message;
 use App\Models\UserInformation;
@@ -24,6 +25,12 @@ class SentList extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
 
+    public $attachment_image;
+    public $view_modal = false;
+    public $has_attachment = false;
+
+    public $message_data;
+
     protected function getTableQuery(): Builder
     {
         return Message::query()->where('user_id', auth()->user()->id);
@@ -41,6 +48,29 @@ class SentList extends Component implements Tables\Contracts\HasTable
 
         ];
 
+    }
+
+    protected function getTableActions(): array
+    {
+        return [
+            Tables\Actions\ActionGroup::make([
+
+                Tables\Actions\Action::make('view')->label('View Message')->icon('heroicon-o-eye')->color('warning')->action(
+                    function ($record) {
+                        $record->update([
+                            'read_at' => now(),
+                        ]);
+                        if (MessageAttachment::where('message_id', $record->id)->count() > 0) {
+                            $this->attachment_image = MessageAttachment::where('message_id', $record->id)->first()->file_path;
+                        }
+                        $this->message_data = $record;
+                        $this->view_modal = true;
+
+
+                    }
+                ),
+            ]),
+        ];
     }
     public function render()
     {

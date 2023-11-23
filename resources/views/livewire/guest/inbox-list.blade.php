@@ -16,10 +16,10 @@
                 <span>Unopened</span>
             </button>
         </div>
-        <x-native-select class="2xl:hidden" wire:model="model">
+        <x-native-select class="2xl:hidden" wire:model="sort">
             <option>Select An Option</option>
-            <option>All</option>
-            <option>Unopened</option>
+            <option value="All">All</option>
+            <option value="Unopened">Unopened</option>
         </x-native-select>
 
         <button wire:click="$set('compose_modal' , true)"

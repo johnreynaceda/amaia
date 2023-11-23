@@ -201,7 +201,8 @@
                         </path>
                     </svg>
                 </a>
-                <div class="hover:bg-white hover:text-[#1c4c4e] text-white rounded-3xl grid place-content-center h-14">
+                <a href="{{ route('guest.about') }}"
+                    class="{{ request()->routeIs('guest.about') ? 'bg-white text-[#1c4c4e]' : 'text-white ' }} hover:bg-white hover:text-[#1c4c4e] rounded-3xl grid place-content-center h-14">
                     <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                         fill="currentColor" aria-hidden="true">
                         <path
@@ -211,7 +212,7 @@
                             d="M21.3 12.23h-3.48c-.98 0-1.85.54-2.29 1.42l-.84 1.66c-.2.4-.6.65-1.04.65h-3.28c-.31 0-.75-.07-1.04-.65l-.84-1.65a2.567 2.567 0 00-2.29-1.42H2.7c-.39 0-.7.31-.7.7v3.26C2 19.83 4.18 22 7.82 22h8.38c3.43 0 5.54-1.88 5.8-5.22v-3.85c0-.38-.31-.7-.7-.7zM13.55 7.8h-3.1c-.39 0-.7-.31-.7-.7 0-.39.31-.7.7-.7h3.1c.39 0 .7.31.7.7 0 .39-.32.7-.7.7zM14.33 10.59H9.67c-.39 0-.7-.31-.7-.7 0-.39.31-.7.7-.7h4.65c.39 0 .7.31.7.7 0 .39-.31.7-.69.7z">
                         </path>
                     </svg>
-                </div>
+                </a>
 
             </div>
         </div>

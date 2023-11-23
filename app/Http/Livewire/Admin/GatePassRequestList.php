@@ -92,6 +92,32 @@ class GatePassRequestList extends Component implements Tables\Contracts\HasTable
                             return $record->status == 'pending';
                         }
                     ),
+                Action::make('declined')->label('Declined')->icon('heroicon-o-thumb-down')->action(
+                    function ($record) {
+                        $record->update([
+                            'status' => 'declined',
+                        ]);
+                        if ($record->user_id != null) {
+                            $message = Message::create([
+                                'user_id' => auth()->check() ? auth()->user()->id : 'null',
+                                'resident_name' => UserInformation::where('unit_number', $record->unit)->first()->user->name,
+                                'receiver_id' => UserInformation::where('unit_number', $record->unit)->first()->user->id,
+                                'complainee_unit' => $record->unit,
+                                'label_type' => 'Pass',
+                                // 'nature_of_complaint' => $this->complaint,
+                                'subject' => 'null',
+                                'message' => 'Your Gate Pass request for UNIT ' . UserInformation::where('unit_number', $record->unit)->first()->user->user_information->unit_number . ' is declined by Admin. For more information, please contact Administrator.',
+                            ]);
+                        } else {
+
+                        }
+                        sweetalert()->addSuccess('Request approved');
+                    }
+                )->visible(
+                        function ($record) {
+                            return $record->status == 'pending';
+                        }
+                    ),
                 Action::make('complete')->label('Completed')->icon('heroicon-o-check-circle')->visible(
                     function ($record) {
                         return $record->status == 'approved';

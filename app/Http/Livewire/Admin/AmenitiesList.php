@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\Amenity;
+use Filament\Forms\Components\Textarea;
 use Livewire\Component;
 use App\Models\Post;
 use Filament\Tables;
@@ -32,6 +33,7 @@ class AmenitiesList extends Component implements Tables\Contracts\HasTable
                     return '₱' . number_format($record->amount, 2);
                 }
             ),
+            TextColumn::make('description')->label('DESCRIPTION')->searchable()->words(10),
 
         ];
 
@@ -45,6 +47,7 @@ class AmenitiesList extends Component implements Tables\Contracts\HasTable
                     Amenity::create([
                         'name' => $data['name'],
                         'amount' => $data['amount'],
+                        'description' => $data['description'],
                     ]);
                     sweetalert()->addSuccess('Amenity has been created');
                 })
@@ -54,6 +57,7 @@ class AmenitiesList extends Component implements Tables\Contracts\HasTable
                         ->schema([
                             TextInput::make('name')->label('Name')->required(),
                             TextInput::make('amount')->label('Amount')->required(),
+                            Textarea::make('description')->label('Description')->required(),
 
                         ])
                 ])->modalWidth('xl')
@@ -69,6 +73,7 @@ class AmenitiesList extends Component implements Tables\Contracts\HasTable
                     $record->update([
                         'name' => $data['name'],
                         'amount' => $data['amount'],
+                        'description' => $data['description'],
                     ]);
                     sweetalert()->addSuccess('Amenity has been updated');
                 }
@@ -77,6 +82,7 @@ class AmenitiesList extends Component implements Tables\Contracts\HasTable
                         return [
                             TextInput::make('name')->label('Name')->required(),
                             TextInput::make('amount')->label('Amount')->required(),
+                            Textarea::make('description')->label('Description')->required(),
                         ];
                     }
                 )->modalWidth('xl')->modalHeading('Edit Amenity'),

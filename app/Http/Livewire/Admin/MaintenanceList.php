@@ -27,6 +27,7 @@ class MaintenanceList extends Component implements Tables\Contracts\HasTable
     {
         return [
             TextColumn::make('name')->label('NAME')->searchable(),
+            TextColumn::make('description')->label('DESCRIPTION')->searchable(),
 
         ];
 
@@ -39,6 +40,7 @@ class MaintenanceList extends Component implements Tables\Contracts\HasTable
                 ->action(function ($record, $data): void {
                     Maintenance::create([
                         'name' => $data['name'],
+                        'description' => $data['description'],
                     ]);
                     sweetalert()->addSuccess('Maintenance has been created');
                 })
@@ -47,6 +49,7 @@ class MaintenanceList extends Component implements Tables\Contracts\HasTable
                     Grid::make(1)
                         ->schema([
                             TextInput::make('name')->label('Name')->required(),
+                            TextInput::make('description')->label('Description')->required(),
 
                         ])
                 ])->modalWidth('xl')
@@ -61,6 +64,7 @@ class MaintenanceList extends Component implements Tables\Contracts\HasTable
                 function ($record, $data) {
                     $record->update([
                         'name' => $data['name'],
+                        'description' => $data['description'],
                     ]);
                     sweetalert()->addSuccess('Maintenance has been updated');
                 }
@@ -68,6 +72,7 @@ class MaintenanceList extends Component implements Tables\Contracts\HasTable
                     function ($record) {
                         return [
                             TextInput::make('name')->label('Name')->required(),
+                            TextInput::make('description')->label('Description')->required(),
                         ];
                     }
                 )->modalWidth('xl')->modalHeading('Edit Maintenance'),

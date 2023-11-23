@@ -39,7 +39,7 @@
                     <div class="flex flex-col flex-shrink-0 px-4">
                         <a class="text-lg font-semibold flex justify-center items-center tracking-tighter text-black focus:outline-none focus:ring "
                             href="">
-                            <img src="{{ asset('images/amaia_logo.png') }}" class="h-9" alt="">
+                            <img src="{{ asset('images/sidebar_logo.png') }}" class="" alt="">
                         </a>
                         <button class="hidden rounded-lg focus:outline-none focus:shadow-outline">
                             <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
@@ -96,13 +96,15 @@
                                                 d="M19 21.0001H5C4.44772 21.0001 4 20.5524 4 20.0001V11.0001L1 11.0001L11.3273 1.61162C11.7087 1.26488 12.2913 1.26488 12.6727 1.61162L23 11.0001L20 11.0001V20.0001C20 20.5524 19.5523 21.0001 19 21.0001ZM6 19.0001H18V9.15757L12 3.70302L6 9.15757V19.0001ZM8 15.0001H16V17.0001H8V15.0001Z">
                                             </path>
                                         </svg>
-                                        <span class="ml-3">
+                                        <span class="ml-3 flex-1">
                                             Home
                                         </span>
+
                                     </a>
+
                                 </li>
                                 <li>
-                                    <a class="{{ request()->routeIs('admin.requests') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                    <a class="{{ request()->routeIs('admin.requests') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex items-center w-full px-4 py-1.5 mt-1 group transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
                                         href="{{ route('admin.requests') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             class="w-5 h-5 md hydrated">
@@ -110,13 +112,39 @@
                                                 d="M2.00488 9.5V4C2.00488 3.44772 2.4526 3 3.00488 3H21.0049C21.5572 3 22.0049 3.44772 22.0049 4V9.5C20.6242 9.5 19.5049 10.6193 19.5049 12C19.5049 13.3807 20.6242 14.5 22.0049 14.5V20C22.0049 20.5523 21.5572 21 21.0049 21H3.00488C2.4526 21 2.00488 20.5523 2.00488 20V14.5C3.38559 14.5 4.50488 13.3807 4.50488 12C4.50488 10.6193 3.38559 9.5 2.00488 9.5ZM4.00488 7.96776C5.4866 8.70411 6.50488 10.2331 6.50488 12C6.50488 13.7669 5.4866 15.2959 4.00488 16.0322V19H20.0049V16.0322C18.5232 15.2959 17.5049 13.7669 17.5049 12C17.5049 10.2331 18.5232 8.70411 20.0049 7.96776V5H4.00488V7.96776ZM9.00488 9H15.0049V11H9.00488V9ZM9.00488 13H15.0049V15H9.00488V13Z">
                                             </path>
                                         </svg>
-                                        <span class="ml-3">
+                                        <span class="ml-3 flex-1">
                                             Requests
                                         </span>
+                                        @php
+                                            $maintenance = \App\Models\MaintenanceRequest::where('status', 'pending')->count();
+                                            $amenity = \App\Models\AmenityRequest::where('status', 'pendings')->count();
+                                            $gate = \App\Models\PassRequest::whereHas('pass', function ($record) {
+                                                $record->where('name', 'Gate Pass');
+                                            })
+                                                ->where('status', 'pending')
+                                                ->count();
+                                            $visitor = \App\Models\PassRequest::whereHas('pass', function ($record) {
+                                                $record->where('name', 'Visitor Pass');
+                                            })
+                                                ->where('status', 'pending')
+                                                ->count();
+
+                                            $parcel = \App\Models\PassRequest::whereHas('pass', function ($record) {
+                                                $record->where('name', 'Parcel Pass');
+                                            })
+                                                ->where('status', 'pending')
+                                                ->count();
+
+                                            $total_pending = $maintenance + $amenity + $visitor + $parcel + $gate;
+                                        @endphp
+                                        @if ($total_pending > 0)
+                                            <span
+                                                class="{{ request()->routeIs('admin.requests') ? 'bg-gray-700 text-white' : 'bg-white' }}  group-hover:bg-gray-700 group-hover:text-white px-2 rounded-md  text-gray-700 font-semibold">{{ $total_pending }}</span>
+                                        @endif
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="{{ request()->routeIs('admin.complaints') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                    <a class="{{ request()->routeIs('admin.complaints') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
                                         href="{{ route('admin.complaints') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             class="w-5 h-5 md hydrated">
@@ -124,13 +152,21 @@
                                                 d="M21 8V20.9932C21 21.5501 20.5552 22 20.0066 22H3.9934C3.44495 22 3 21.556 3 21.0082V2.9918C3 2.45531 3.4487 2 4.00221 2H14.9968L21 8ZM19 9H14V4H5V20H19V9ZM8 7H11V9H8V7ZM8 11H16V13H8V11ZM8 15H16V17H8V15Z">
                                             </path>
                                         </svg>
-                                        <span class="ml-3">
+                                        <span class="ml-3 flex-1">
                                             Complaints
                                         </span>
+
+
+                                        @if (\App\Models\Complaint::count() > 0)
+                                            <span
+                                                class="{{ request()->routeIs('admin.complaints') ? 'bg-gray-700 text-white' : 'bg-white' }}  group-hover:bg-gray-700 group-hover:text-white px-2 rounded-md  text-gray-700 font-semibold">
+                                                \App\Models\Complaint::count()
+                                            </span>
+                                        @endif
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="{{ request()->routeIs('admin.announcement') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                    <a class="{{ request()->routeIs('admin.announcement') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
                                         href="{{ route('admin.announcement') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             class="w-5 h-5 md hydrated">
@@ -138,13 +174,14 @@
                                                 d="M9 17C9 17 16 18 19 21H20C20.5523 21 21 20.5523 21 20V13.937C21.8626 13.715 22.5 12.9319 22.5 12C22.5 11.0681 21.8626 10.285 21 10.063V4C21 3.44772 20.5523 3 20 3H19C16 6 9 7 9 7H5C3.89543 7 3 7.89543 3 9V15C3 16.1046 3.89543 17 5 17H6L7 22H9V17ZM11 8.6612C11.6833 8.5146 12.5275 8.31193 13.4393 8.04373C15.1175 7.55014 17.25 6.77262 19 5.57458V18.4254C17.25 17.2274 15.1175 16.4499 13.4393 15.9563C12.5275 15.6881 11.6833 15.4854 11 15.3388V8.6612ZM5 9H9V15H5V9Z">
                                             </path>
                                         </svg>
-                                        <span class="ml-3">
+                                        <span class="ml-3 flex-1">
                                             Announcements
                                         </span>
+
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="{{ request()->routeIs('admin.messages') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                    <a class="{{ request()->routeIs('admin.messages') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
                                         href="{{ route('admin.messages') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                             class="w-5 h-5 md hydrated">
@@ -152,9 +189,17 @@
                                                 d="M5.45455 15L1 18.5V3C1 2.44772 1.44772 2 2 2H17C17.5523 2 18 2.44772 18 3V15H5.45455ZM4.76282 13H16V4H3V14.3851L4.76282 13ZM8 17H18.2372L20 18.3851V8H21C21.5523 8 22 8.44772 22 9V22.5L17.5455 19H9C8.44772 19 8 18.5523 8 18V17Z">
                                             </path>
                                         </svg>
-                                        <span class="ml-3">
+                                        <span class="ml-3 flex-1">
                                             Messages
                                         </span>
+
+                                        @if (\App\Models\Message::where('receiver_id', auth()->user()->id)->where('read_at', null)->count() > 0)
+                                            <span
+                                                class="{{ request()->routeIs('admin.messages') ? 'bg-gray-700 text-white' : 'bg-white' }}  group-hover:bg-gray-700 group-hover:text-white px-2 rounded-md  text-gray-700 font-semibold">
+                                                {{ \App\Models\Message::where('receiver_id', auth()->user()->id)->where('read_at', null)->count() }}
+                                            </span>
+                                        @endif
+
                                     </a>
                                 </li>
                             </ul>
@@ -213,7 +258,7 @@
                             class="flex flex-col items-start p-3 transition duration-150 ease-in-out bg-gray-100 rounded-xl">
                             <div>
                                 <img class="inline-block rounded-full object-cover h-9 w-9"
-                                    src="{{ asset('images/amaia_logo.png') }}" alt="">
+                                    src="{{ asset('images/favicon.png') }}" alt="">
                             </div>
                             <div>
                                 <p class="mt-2 text-base font-bold text-[#1c4c4e]">

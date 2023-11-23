@@ -63,18 +63,19 @@ class Profile extends Component implements Forms\Contracts\HasForms
                         ->options([
                             'Single' => 'Single',
                             'Married' => 'Married',
-                            'Widoweded' => 'Widoweded',
+                            'Windowed' => 'Windowed',
                             'Divorceced' => 'Divorced'
                         ]),
 
                     TextInput::make('nationality')->label('Nationality')->placeholder(auth()->user()->user_information->nationality),
                     Textarea::make('preffered_address')->label('Preferred Mailing Address')->placeholder(auth()->user()->user_information->preferred_mailing_address),
                     DatePicker::make('turn_over')->placeholder(auth()->user()->user_information->turn_over_date == null ? '' : \Carbon\Carbon::parse(auth()->user()->user_information->turn_over_date)->format('F d, Y')),
-                    TextInput::make('phone_number')->label('Phone Number')->placeholder(auth()->user()->user_information->phone_number),
-                    Toggle::make('allow_notifications')->label('Allow Notifications')->inline(false)
-                        ->onColor('primary')
-                        ->offColor('danger')->onIcon('heroicon-s-bell')
-                        ->offIcon('heroicon-s-ban')
+                    TextInput::make('phone_number')->label('Phone Number')->placeholder(auth()->user()->user_information->phone_number)->mask(fn(TextInput\Mask $mask) => $mask->pattern('00000000000')),
+
+                    // Toggle::make('allow_notifications')->label('Allow Notifications')->inline(false)
+                    //     ->onColor('primary')
+                    //     ->offColor('danger')->onIcon('heroicon-s-bell')
+                    //     ->offIcon('heroicon-s-ban')
                 ])
                 ->columns(4)
 

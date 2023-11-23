@@ -196,7 +196,7 @@ class MessageList extends Component implements Tables\Contracts\HasTable
                         }
                     ),
                 Tables\Actions\Action::make('contact_tenant')->label('Contact Tenant')->icon('heroicon-o-phone-incoming'),
-                Tables\Actions\Action::make('contact_dept')->label('Contact Dept')->icon('heroicon-o-phone-incoming'),
+                // Tables\Actions\Action::make('contact_dept')->label('Contact Dept')->icon('heroicon-o-phone-incoming'),
                 Tables\Actions\DeleteAction::make('delete')->label('Delete')->icon('heroicon-o-trash')->action(
                     function ($record) {
                         $record->update([
@@ -245,7 +245,9 @@ class MessageList extends Component implements Tables\Contracts\HasTable
 
     public function updatedLotNumber()
     {
-        $data = UserInformation::where('unit_number', $this->lot_number)->first();
+        $data = UserInformation::where('unit_number', $this->lot_number)->whereHas('user', function ($record) {
+            $record->where('is_accepted', 1);
+        })->first();
         if ($data) {
             $this->details = $data;
         } else {

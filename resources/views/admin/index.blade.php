@@ -83,7 +83,23 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="font-bold text-main text-3xl">3434</p>
+                    @php
+                        $maintenance = \App\Models\MaintenanceRequest::count();
+                        $amenity = \App\Models\AmenityRequest::count();
+                        $gate = \App\Models\PassRequest::whereHas('pass', function ($record) {
+                            $record->where('name', 'Gate Pass');
+                        })->count();
+                        $visitor = \App\Models\PassRequest::whereHas('pass', function ($record) {
+                            $record->where('name', 'Visitor Pass');
+                        })->count();
+
+                        $parcel = \App\Models\PassRequest::whereHas('pass', function ($record) {
+                            $record->where('name', 'Parcel Pass');
+                        })->count();
+
+                        $total_pending = $maintenance + $amenity + $visitor + $parcel + $gate;
+                    @endphp
+                    <p class="font-bold text-main text-3xl">{{ $total_pending }}</p>
                     <p class="mt-1 text-gray-500">Total Requests</p>
                 </div>
                 <div class="absolute -bottom-2 -right-2">

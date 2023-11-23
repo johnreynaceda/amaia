@@ -67,12 +67,7 @@
                     </div>
 
                 </div>
-                <x-modal blur wire:model.defer="gate_form" align="center">
-                    <div>
-                        <img src="{{ asset('images/files/Gate Pass Agreement Form_.jpg') }}"
-                            class="2xl:h-[40rem] h-[30rem] " alt="">
-                    </div>
-                </x-modal>
+
             </div>
 
 
@@ -145,25 +140,18 @@
                         SKIES.
                     </p>
                 </div>
-                <x-modal blur wire:model.defer="visitor_form" align="center">
-                    <div>
-                        <img src="{{ asset('images/files/') }}" class="2xl:h-[40rem] h-[30rem] " alt="">
-                    </div>
-                </x-modal>
-                <x-modal blur wire:model.defer="visitor_clause" align="center">
-                    <div>
-                        <img src="{{ asset('images/files/Tenant Liability Clause.jpg') }}"
-                            class="2xl:h-[40rem] h-[30rem] " alt="">
-                    </div>
-                </x-modal>
+
             </div>
             <x-slot name="footer">
 
                 <div class="flex justify-end gap-x-4">
 
-                    <x-button flat label="Cancel" x-on:click="close" />
+                    <div>
+                        <x-button flat label="Cancel" x-on:click="close" />
 
-                    <x-button dark label="Submit" wire:click="submitVisitorPass" spinner="submitVisitorPass" />
+                        <x-button dark label="Submit" wire:click="submitVisitorPass" class="mt-1"
+                            spinner="submitVisitorPass" />
+                    </div>
 
                 </div>
 
@@ -171,5 +159,22 @@
 
         </x-card>
 
+    </x-modal>
+    <x-modal blur wire:model.defer="gate_form" align="center">
+        <div>
+            <img src="{{ asset('images/files/Gate Pass Agreement Form_.jpg') }}" class="2xl:h-[40rem] h-[30rem] "
+                alt="">
+        </div>
+    </x-modal>
+    <x-modal blur wire:model.defer="visitor_form" align="center">
+        <div>
+            <img src="{{ asset('images/files/visitor form.png') }}" class="2xl:h-[40rem] h-[30rem] " alt="">
+        </div>
+    </x-modal>
+    <x-modal blur wire:model.defer="visitor_clause" align="center">
+        <div>
+            <img src="{{ asset('images/files/Tenant Liability Clause.jpg') }}" class="2xl:h-[40rem] h-[30rem] "
+                alt="">
+        </div>
     </x-modal>
 </div>

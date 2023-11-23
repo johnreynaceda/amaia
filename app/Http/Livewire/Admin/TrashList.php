@@ -44,6 +44,20 @@ class TrashList extends Component implements Tables\Contracts\HasTable
 
     }
 
+    protected function getTableActions(): array
+    {
+        return [
+            Tables\Actions\Action::make('undo')->label('Undo')->button()->icon('heroicon-o-reply')->color('primary')->action(
+                function ($record) {
+                    $record->update([
+                        'status' => 'active',
+                    ]);
+                    sweetalert()->addSuccess('Message Undo');
+                }
+            ),
+        ];
+    }
+
     public function render()
     {
         return view('livewire.admin.trash-list');

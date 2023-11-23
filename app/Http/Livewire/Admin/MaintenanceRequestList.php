@@ -35,7 +35,7 @@ class MaintenanceRequestList extends Component implements Tables\Contracts\HasTa
     protected function getTableQuery(): Builder
     {
 
-        return MaintenanceRequest::query()->orderBy('status');
+        return MaintenanceRequest::query()->orderBy('status')->where('status', '!=', 'declined');
 
     }
 
@@ -108,6 +108,30 @@ class MaintenanceRequestList extends Component implements Tables\Contracts\HasTa
                         ]);
 
                         sweetalert()->addSuccess('Request approved');
+                    }
+                )->visible(
+                        function ($record) {
+                            return $record->status == 'pending';
+                        }
+                    ),
+                Action::make('declined')->label('Declined')->icon('heroicon-o-thumb-down')->color('danger')->action(
+                    function ($record) {
+                        $record->update([
+                            'status' => 'declined',
+                        ]);
+
+                        $message = Message::create([
+                            'user_id' => auth()->user()->id,
+                            'resident_name' => $record->user->name,
+                            'receiver_id' => $record->user_id,
+                            'complainee_unit' => $record->user->user_information->unit_number,
+                            'label_type' => 'Maintenance',
+                            // 'nature_of_complaint' => $this->complaint,
+                            'subject' => 'null',
+                            'message' => 'Your Maintenance (' . Maintenance::Where('id', $record->maintenance_id)->first()->name . ') request for UNIT ' . $record->user->user_information->unit_number . ' is declined by Admin. For more information, please contact the administrator.',
+                        ]);
+
+                        sweetalert()->addSuccess('Request Declined');
                     }
                 )->visible(
                         function ($record) {

@@ -73,12 +73,13 @@ class RegisterTenant extends Component implements Forms\Contracts\HasForms
                         ->options([
                             'Single' => 'Single',
                             'Married' => 'Married',
-                            'Widoweded' => 'Widoweded',
+                            'Widowed' => 'Widowed',
                             'Divorceced' => 'Divorced'
                         ]),
 
                     TextInput::make('nationality')->label('Nationality'),
-                    TextInput::make('phone_number')->label('Phone Number'),
+                    TextInput::make('phone_number')->label('Phone Number')->numeric()->mask(fn(TextInput\Mask $mask) => $mask->pattern('00000000000')),
+
 
                 ])
                 ->columns(4)
