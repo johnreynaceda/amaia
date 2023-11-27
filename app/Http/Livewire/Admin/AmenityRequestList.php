@@ -65,7 +65,7 @@ class AmenityRequestList extends Component implements Tables\Contracts\HasTable
             TextColumn::make('request_date')->label('REQUESTED DATE')->date()->sortable(),
             TextColumn::make('preffered_time')->label('PREFFERED TIME')->formatStateUsing(
                 function ($record) {
-                    return \Carbon\Carbon::parse($record->preffered_time)->format('H:i A');
+                    return \Carbon\Carbon::parse($record->request_date)->format('H:i A');
                 }
             )->sortable(),
             BadgeColumn::make('status')->label('STATUS')
@@ -122,7 +122,7 @@ class AmenityRequestList extends Component implements Tables\Contracts\HasTable
                             return $record->status == 'pending';
                         }
                     ),
-                Action::make('declined')->label('Declined')->icon('heroicon-o-thumb-down')->action(
+                Action::make('declined')->label('Declined')->icon('heroicon-o-thumb-down')->color('danger')->action(
                     function ($record) {
                         $record->update([
                             'status' => 'declined',

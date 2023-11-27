@@ -22,8 +22,7 @@ return new class extends Migration {
             $table->string('relation')->nullable();
             $table->string('quantity')->nullable();
             $table->string('contact_number')->nullable();
-            $table->date('request_date');
-            $table->time('preffered_time');
+            $table->dateTime('request_date');
             $table->string('status')->default('pending');
             $table->dateTime('date_completed')->nullable();
             $table->timestamps();

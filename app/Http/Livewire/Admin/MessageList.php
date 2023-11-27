@@ -195,7 +195,29 @@ class MessageList extends Component implements Tables\Contracts\HasTable
                             sweetalert()->addSuccess('Message Completed');
                         }
                     ),
-                Tables\Actions\Action::make('contact_tenant')->label('Contact Tenant')->icon('heroicon-o-phone-incoming'),
+                Tables\Actions\Action::make('contact_tenant')->label('Contact Tenant')->icon('heroicon-o-phone-incoming')->action(
+                    function ($record, $data) {
+                        Message::create([
+                            'user_id' => auth()->user()->id,
+                            'resident_name' => $record->resident_name,
+                            'receiver_id' => $record->user_id,
+                            'complainee_unit' => $record->complainee_unit,
+                            'label_type' => $record->label_type,
+                            'nature_of_complaint' => $record->nature_of_complaint,
+                            'subject' => $data['subject'],
+                            'message' => $data['message'],
+                        ]);
+
+                        sweetalert()->addSuccess('Message Send');
+                    }
+                )->form(function ($record) {
+                    return [
+                        TextInput::make('label_type')->label('Label Type')->placeholder($record->label_type)->disabled(),
+                        TextInput::make('nature')->label('Nature of Complaint')->placeholder($record->nature_of_complaint)->disabled(),
+                        TextInput::make('subject')->label('Subject'),
+                        Textarea::make('message')->label('Message')
+                    ];
+                })->modalWidth('2xl'),
                 // Tables\Actions\Action::make('contact_dept')->label('Contact Dept')->icon('heroicon-o-phone-incoming'),
                 Tables\Actions\DeleteAction::make('delete')->label('Delete')->icon('heroicon-o-trash')->action(
                     function ($record) {

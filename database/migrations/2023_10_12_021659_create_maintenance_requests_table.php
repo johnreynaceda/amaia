@@ -14,8 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('maintenance_id');
-            $table->date('request_date');
-            $table->time('preffered_time');
+            $table->dateTime('request_date');
             $table->string('status')->default('pending');
             $table->string('amount')->nullable();
             $table->dateTime('date_completed')->nullable();

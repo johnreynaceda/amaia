@@ -19,7 +19,7 @@ class Home extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return User::query()->where('is_accepted', false)->where('is_admin', false);
+        return User::query()->where('status', null)->where('is_accepted', false)->where('is_admin', false);
     }
     protected function getTableColumns(): array
     {
@@ -33,7 +33,7 @@ class Home extends Component implements Tables\Contracts\HasTable
             )->searchable(),
             TextColumn::make('user_information.date_of_birth')->date()->label('BIRTHDATE')->searchable(),
             TextColumn::make('user_information.gender')->label('GENDER')->searchable(),
-            TextColumn::make('user_information.civil_status')->label('CILVIL STATUS')->searchable(),
+            TextColumn::make('user_information.civil_status')->label('CIVIL STATUS')->searchable(),
             TextColumn::make('user_information.phone_number')->label('PHONE NUMBER')->searchable(),
 
         ];
@@ -50,6 +50,15 @@ class Home extends Component implements Tables\Contracts\HasTable
                             'is_accepted' => true
                         ]);
                         sweetalert()->addSuccess('User successfully updated');
+                    }
+                ),
+                Action::make('decline')->button()->icon('heroicon-o-thumb-down')->color('danger')->action(
+                    function ($record) {
+                        $record->update([
+
+                            'status' => 'declined',
+                        ]);
+                        sweetalert()->addSuccess('User declined successfully');
                     }
                 ),
             ]),

@@ -8,6 +8,7 @@ use App\Models\Maintenance;
 use App\Models\MaintenanceRequest;
 use App\Models\Pass;
 use App\Models\PassRequest;
+use Carbon\Carbon;
 use Livewire\Component;
 use Filament\Forms;
 use Illuminate\Contracts\View\View;
@@ -20,7 +21,7 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
 
     public $maintenance_id, $request_date, $request_time, $request, $amount = 0;
 
-    public $amenity_type, $ocassion, $total_persons, $remark;
+    public $amenity_type, $ocassion, $total_persons, $remarks;
 
     public $visitor, $building, $unit, $particulars, $quantity, $purpose;
 
@@ -69,15 +70,13 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
         $this->validate([
             'maintenance_id' => 'required',
             'request_date' => 'required',
-            'request_time' => 'required',
             'request' => 'required',
         ]);
 
         MaintenanceRequest::create([
             'user_id' => auth()->user()->id,
             'maintenance_id' => $this->maintenance_id,
-            'request_date' => $this->request_date,
-            'preffered_time' => $this->request_time
+            'request_date' => Carbon::parse($this->request_date),
         ]);
 
         sweetalert()->addSuccess('Request Submitted');
@@ -87,22 +86,22 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
 
     public function submitAmenities()
     {
+
         $this->validate([
             'amenity_type' => 'required',
             'ocassion' => 'required',
-            'remark' => 'required',
+            'remarks' => 'required',
             'total_persons' => 'required',
             'request_date' => 'required',
-            'request_time' => 'required',
             'request' => 'required',
             'visitor' => 'required',
         ]);
+        // dd('sdsd');
         AmenityRequest::create([
             'user_id' => auth()->user()->id,
             'amenity_id' => $this->amenity_type,
-            'request_date' => $this->request_date,
-            'preffered_time' => $this->request_time,
-            'remark' => $this->remark,
+            'request_date' => Carbon::parse($this->request_date),
+            'remark' => $this->remarks,
             'no_of_person' => $this->total_persons,
             'amount' => $this->amount,
             'visitors' => $this->visitor,
@@ -113,10 +112,25 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
         return redirect()->route('guest.requests');
     }
 
-    public function submitGatePass()
+    public function submitAmenity()
     {
 
+        AmenityRequest::create([
+            'user_id' => auth()->user()->id,
+            'amenity_id' => $this->amenity_type,
+            'request_date' => Carbon::parse($this->request_date),
+            'remark' => $this->remarks,
+            'no_of_person' => $this->total_persons,
+            'amount' => $this->amount,
+            'visitors' => $this->visitor,
+        ]);
+        sweetalert()->addSuccess('Request Submitted');
 
+        return redirect()->route('guest.requests');
+    }
+
+    public function submitGatePass()
+    {
         $this->validate([
             'visitor' => 'required',
             'building' => 'required',
@@ -125,7 +139,6 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
             'particulars' => 'required',
             'quantity' => 'required',
             'request_date' => 'required',
-            'request_time' => 'required',
         ]);
         $data = Pass::where('name', 'like', '%' . 'Gate Pass' . '%')->first();
 
@@ -138,8 +151,7 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
             'purpose' => $this->purpose,
             'particulars' => $this->particulars,
             'quantity' => $this->quantity,
-            'request_date' => $this->request_date,
-            'preffered_time' => $this->request_time
+            'request_date' => Carbon::parse($this->request_date),
         ]);
         sleep(2);
         sweetalert()->addSuccess('Request Submitted');
@@ -154,7 +166,6 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
             'unit' => 'required',
             'relation' => 'required',
             'request_date' => 'required',
-            'request_time' => 'required',
         ]);
         $data = Pass::where('name', 'like', '%' . 'Visitor Pass' . '%')->first();
 
@@ -164,8 +175,7 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
             'visitor_name' => $this->visitor,
             'unit' => $this->unit,
             'relation' => $this->relation,
-            'request_date' => $this->request_date,
-            'preffered_time' => $this->request_time
+            'request_date' => Carbon::parse($this->request_date),
 
         ]);
         sleep(2);
@@ -190,8 +200,7 @@ class RequestTransaction extends Component implements Forms\Contracts\HasForms
             'contact_number' => $this->contact,
             'quantity' => $this->quantity,
             'purpose' => $this->reason,
-            'request_date' => $this->request_date,
-            'preffered_time' => now()
+            'request_date' => Carbon::parse($this->request_date),
 
         ]);
         sleep(2);

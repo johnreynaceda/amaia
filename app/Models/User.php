@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'is_admin',
         'is_accepted',
-        'allow_notification'
+        'allow_notification',
+        'status'
     ];
 
     /**
@@ -53,7 +54,7 @@ class User extends Authenticatable
 
     public function maintenance_requests()
     {
-        return $this->hasMany(MaintenanceRequests::class);
+        return $this->hasMany(MaintenanceRequest::class);
     }
 
     public function pass_requests()

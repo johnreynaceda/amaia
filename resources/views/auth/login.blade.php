@@ -110,9 +110,17 @@
 
                                 </div>
 
-                                <x-primary-button class="my-5">
-                                    {{ __('Sign In') }}
-                                </x-primary-button>
+                                <div class="flex justify-between items-center">
+                                    <x-primary-button class="my-5">
+                                        {{ __('Sign In') }}
+                                    </x-primary-button>
+                                    @if (Route::has('password.request'))
+                                        <a class="underline text-sm text-white hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                            href="{{ route('password.request') }}">
+                                            {{ __('Forgot your password?') }}
+                                        </a>
+                                    @endif
+                                </div>
 
                             </form>
                             <div class="relative">

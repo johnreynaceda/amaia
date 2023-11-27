@@ -42,10 +42,11 @@
                 <div
                     class="mt-3 bg-[#1c4c4e] bg-opacity-80 rounded-lg grid 2xl:grid-cols-4 grid-cols-1 gap-2 py-6 px-2">
                     <div>
-                        <x-datetime-picker without-time placeholder="Request Date" wire:model="request_date" />
+                        <x-datetime-picker without-timezone min-time="07:30" :min="now()" max-time="22:00"
+                            placeholder="Request Date" wire:model="request_date" />
                     </div>
                     <div>
-                        <x-time-picker placeholder="Request Time" wire:model="request_time" />
+                        {{-- <x-time-picker placeholder="Request Time" wire:model="request_time" /> --}}
                     </div>
                     <div>
 
@@ -121,20 +122,22 @@
                 <div
                     class="mt-3 bg-[#1c4c4e] bg-opacity-80 rounded-lg grid 2xl:grid-cols-4 grid-cols-1 gap-2 py-6 px-2">
                     <div>
-                        <x-datetime-picker without-time placeholder="Request Date" wire:model="request_date" />
+                        <x-datetime-picker without-timezone min-time="07:30" :min="now()" max-time="22:00"
+                            placeholder="Request Date" wire:model="request_date" />
                     </div>
                     <div>
-                        <x-time-picker placeholder="Request Time" wire:model="request_time" />
+                        {{-- <x-time-picker placeholder="Request Time" wire:model="request_time" /> --}}
+                        {{-- <input type="time" id="timePicker" name="timePicker" min="07:30" max="22:00"> --}}
                     </div>
                     <div>
-                        <x-textarea class="2xl:hidden" placeholder="write your remarks" />
+                        <x-textarea class="2xl:hidden" wire:model="remarks" placeholder="write your remarks" />
                     </div>
                     <div>
                         <x-button label="View Form" wire:click="$set('amenity_form', true)" white
                             icon="document-text" />
                     </div>
                     <div class="hidden 2xl:block">
-                        <x-textarea wire:model="remark" placeholder="write your remarks" />
+                        <x-textarea wire:model="remarks" placeholder="write your remarks" />
                     </div>
                 </div>
                 <p class="mt-2 text-gray-700 text-sm">
@@ -144,7 +147,10 @@
             </div>
             <div class="mt-3 ">
                 <x-button label="Submit" wire:click="submitAmenities" spinner="submitAmenities" dark positive
-                    class="font-medium" />
+                    class="font-medium " />
+
+                {{-- <x-button label="Submit Request" wire:click="submitAmenity" spinner="submitAmenity" dark positive
+                    class="font-medium  2xl:hidden" /> --}}
             </div>
         </div>
 
@@ -187,11 +193,12 @@
                 <div
                     class="mt-3 bg-[#1c4c4e] bg-opacity-80 rounded-lg grid 2xl:grid-cols-4 grid-cols-1 gap-2 py-6 px-2">
                     <div>
-                        <x-datetime-picker without-time placeholder="Request Date" wire:model="request_date" />
+                        <x-datetime-picker without-timezone min-time="07:30" :min="now()" max-time="22:00"
+                            placeholder="Request Date" wire:model="request_date" />
                         <span class="text-xs text-white"> Gate Pass are valid for a day only.</span>
                     </div>
                     <div>
-                        <x-time-picker placeholder="Request Time" wire:model="request_time" />
+                        {{-- <x-time-picker placeholder="Request Time" wire:model="request_time" /> --}}
                     </div>
 
                     <div>
@@ -246,11 +253,12 @@
                 <div
                     class="mt-3 bg-[#1c4c4e] bg-opacity-80 rounded-lg grid 2xl:grid-cols-4 grid-cols-1 gap-2 py-6 px-2">
                     <div>
-                        <x-datetime-picker without-time placeholder="Request Date" wire:model="request_date" />
+                        <x-datetime-picker without-timezone min-time="07:30" :min="now()" max-time="22:00"
+                            placeholder="Request Date" wire:model="request_date" />
 
                     </div>
                     <div>
-                        <x-time-picker placeholder="Request Time" wire:model="request_time" />
+                        {{-- <x-time-picker placeholder="Request Time" wire:model="request_time" /> --}}
                     </div>
 
                     <div>
@@ -310,7 +318,8 @@
 
                 <div class="2xl:w-72">
                     <h1 class="text-sm text-gray-500">Expected Date of Arrival</h1>
-                    <x-datetime-picker without-time wire:model="request_date" />
+                    <x-datetime-picker min-time="07:30" :min="now()" max-time="22:00" placeholder="Request Date"
+                        wire:model="request_date" />
                     <p class="text-xs mt-1">
                         Note that the actual start of the validity is the
                         Date and Time this form has been submitted.</p>

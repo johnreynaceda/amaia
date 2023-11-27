@@ -133,6 +133,21 @@
                     </div>
                 @endif
             </div>
+            <div class="mt-5" x-animate>
+                @if ($reply_modal)
+                    <div class="border rounded-lg p-2">
+                        <x-textarea wire:model="reply_messages" label="Message" />
+                        <div class="mt-2 flex space-x-2">
+                            <x-button label="Reply" wire:click="replyMessage" spinner="replyMessage" positive
+                                right-icon="reply" sm />
+                            <x-button label="Cancel" negative sm wire:click="$set('reply_modal', false)" />
+                        </div>
+                    </div>
+                @else
+                    <x-button label="Reply to this message" wire:click="$set('reply_modal', true)" dark sm />
+                @endif
+
+            </div>
             <x-slot name="footer">
                 <div class="flex justify-end gap-x-4">
                     <x-button flat label="Cancel" wire:click="closeModal" />

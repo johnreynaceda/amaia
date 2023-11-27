@@ -143,7 +143,7 @@
                                         @endif
                                     </a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a class="{{ request()->routeIs('admin.complaints') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
                                         href="{{ route('admin.complaints') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -164,7 +164,7 @@
                                             </span>
                                         @endif
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <a class="{{ request()->routeIs('admin.announcement') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
                                         href="{{ route('admin.announcement') }}">
@@ -202,8 +202,64 @@
 
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="{{ request()->routeIs('admin.users') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                        href="{{ route('admin.users') }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                            class="w-5 h-5 md hydrated">
+                                            <path
+                                                d="M14 14.252V16.3414C13.3744 16.1203 12.7013 16 12 16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14C12.6906 14 13.3608 14.0875 14 14.252ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM17.7929 19.9142L21.3284 16.3787L22.7426 17.7929L17.7929 22.7426L14.2574 19.2071L15.6716 17.7929L17.7929 19.9142Z">
+                                            </path>
+                                        </svg>
+                                        <span class="ml-3 flex-1">
+                                            Users
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="{{ request()->routeIs('admin.unit-owner') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                        href="{{ route('admin.unit-owner') }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                            class="w-5 h-5 md hydrated">
+                                            <path
+                                                d="M14 14.252V16.3414C13.3744 16.1203 12.7013 16 12 16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14C12.6906 14 13.3608 14.0875 14 14.252ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM17.7929 19.9142L21.3284 16.3787L22.7426 17.7929L17.7929 22.7426L14.2574 19.2071L15.6716 17.7929L17.7929 19.9142Z">
+                                            </path>
+                                        </svg>
+                                        <span class="ml-3 flex-1">
+                                            Unit Owner
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="{{ request()->routeIs('admin.tenant') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                        href="{{ route('admin.tenant') }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                            class="w-5 h-5 md hydrated">
+                                            <path
+                                                d="M14 14.252V16.3414C13.3744 16.1203 12.7013 16 12 16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14C12.6906 14 13.3608 14.0875 14 14.252ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM17.7929 19.9142L21.3284 16.3787L22.7426 17.7929L17.7929 22.7426L14.2574 19.2071L15.6716 17.7929L17.7929 19.9142Z">
+                                            </path>
+                                        </svg>
+                                        <span class="ml-3 flex-1">
+                                            Tenant
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="{{ request()->routeIs('admin.reports') ? 'bg-white text-[#1c4c4e] fill-[#1c4c4e] scale-95' : 'fill-white text-white ' }} inline-flex group items-center w-full px-4 py-1.5 mt-1  transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-[#1c4c4e] hover:fill-[#1c4c4e]"
+                                        href="{{ route('admin.reports') }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                            class="w-5 h-5 md hydrated">
+                                            <path
+                                                d="M21 8V20.9932C21 21.5501 20.5552 22 20.0066 22H3.9934C3.44495 22 3 21.556 3 21.0082V2.9918C3 2.45531 3.4487 2 4.00221 2H14.9968L21 8ZM19 9H14V4H5V20H19V9ZM8 7H11V9H8V7ZM8 11H16V13H8V11ZM8 15H16V17H8V15Z">
+                                            </path>
+                                        </svg>
+                                        <span class="ml-3 flex-1">
+                                            Reports
+                                        </span>
+                                    </a>
+                                </li>
                             </ul>
-                            <p class="px-4 pt-20 text-xs font-semibold text-gray-200 uppercase">
+                            <p class="px-4 pt-10 text-xs font-semibold text-gray-200 uppercase">
                                 MANAGE
                             </p>
                             <ul>

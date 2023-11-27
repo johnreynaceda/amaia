@@ -62,7 +62,7 @@ class VisitorRequestList extends Component implements Tables\Contracts\HasTable
             TextColumn::make('request_date')->label('REQUEST DATE')->date()->sortable(),
             TextColumn::make('preffered_time')->label('TIME')->sortable()->formatStateUsing(
                 function ($record) {
-                    return \Carbon\Carbon::parse($record->preffered_time)->format('H:i A');
+                    return \Carbon\Carbon::parse($record->request_date)->format('H:i A');
                 }
             ),
             BadgeColumn::make('status')->label('STATUS')
@@ -111,7 +111,7 @@ class VisitorRequestList extends Component implements Tables\Contracts\HasTable
                             return $record->status == 'pending';
                         }
                     ),
-                Action::make('declined')->label('Declined')->icon('heroicon-o-thumb-down')->action(
+                Action::make('declined')->label('Declined')->icon('heroicon-o-thumb-down')->color('danger')->action(
                     function ($record) {
                         $record->update([
                             'status' => 'declined',

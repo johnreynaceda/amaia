@@ -124,7 +124,7 @@
                 @forelse ($transactions as $item)
                     <div class="grid grid-cols-2 gap-2 {{ $loop->first ? '' : 'border-t border-gray-500' }} p-1 px-2">
                         <div class="uppercase font-medium">
-                            {{ $item->pass->name }}</div>
+                            {{ $item->pass->name }}-({{ $item->visitor_name }})</div>
                         <div class="text-right text-xs 2xl:text-sm">
                             <div class="text-2xs 2xl:text-sm">
                                 DATE FILED:
@@ -175,7 +175,7 @@
                 @forelse ($transactions as $item)
                     <div class="grid grid-cols-2 gap-2 {{ $loop->first ? '' : 'border-t border-gray-500' }} p-1 px-2">
                         <div class="uppercase font-medium">
-                            {{ $item->pass->name }}</div>
+                            {{ $item->pass->name }}-({{ $item->visitor_name }})</div>
                         <div class="text-right text-xs 2xl:text-sm">
                             <div class="text-2xs 2xl:text-sm">
                                 DATE FILED:

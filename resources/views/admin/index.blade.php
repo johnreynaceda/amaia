@@ -2,7 +2,8 @@
 <x-admin-layout>
     <div>
         <div class="grid grid-cols-4 gap-5">
-            <div class="border-2 cursor-pointer border-main bg-gray-100 rounded-xl relative overflow-hidden group p-6">
+            <a href="{{ route('admin.users') }}"
+                class="border-2 cursor-pointer border-main bg-gray-100 rounded-xl relative overflow-hidden group p-6">
                 <div class="flex justify-end">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6 fill-gray-500 ">
                         <path
@@ -23,8 +24,9 @@
                         </path>
                     </svg>
                 </div>
-            </div>
-            <div class="border-2 cursor-pointer border-main bg-gray-100 rounded-xl relative overflow-hidden group p-6">
+            </a>
+            <a href="{{ route('admin.unit-owner') }}"
+                class="border-2 cursor-pointer border-main bg-gray-100 rounded-xl relative overflow-hidden group p-6">
                 <div class="flex justify-end">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6 fill-gray-500  ">
                         <path
@@ -48,8 +50,9 @@
                         </path>
                     </svg>
                 </div>
-            </div>
-            <div class="border-2 cursor-pointer border-main bg-gray-100 rounded-xl relative overflow-hidden group p-6">
+            </a>
+            <a href="{{ route('admin.tenant') }}"
+                class="border-2 cursor-pointer border-main bg-gray-100 rounded-xl relative overflow-hidden group p-6">
                 <div class="flex justify-end">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6 fill-gray-500  ">
                         <path
@@ -73,7 +76,7 @@
                         </path>
                     </svg>
                 </div>
-            </div>
+            </a>
             <div class="border-2 cursor-pointer border-main bg-gray-100 rounded-xl relative overflow-hidden group p-6">
                 <div class="flex justify-end">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6 fill-gray-500  ">

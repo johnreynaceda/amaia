@@ -30,10 +30,12 @@ class InboxList extends Component implements Tables\Contracts\HasTable
     public $view_modal = false;
     public $has_attachment = false;
 
+    public $reply_modal = false;
+
     public $message_data;
     public $attachment_image;
     public $sort = "All";
-    public $attachment, $label, $message, $subject, $complaint;
+    public $attachment, $label, $message, $subject, $complaint, $reply_messages;
     public function render()
     {
         return view('livewire.guest.inbox-list');
@@ -42,7 +44,7 @@ class InboxList extends Component implements Tables\Contracts\HasTable
     protected function getFormSchema(): array
     {
         return [
-            Select::make('label')->label('Label Type')
+            Select::make('label')->label('Label Type')->reactive()
                 ->options([
                     'Complaint' => 'Complaint',
                     'Concerns' => 'Concerns',
@@ -50,7 +52,11 @@ class InboxList extends Component implements Tables\Contracts\HasTable
                     'Amenity' => 'Amenity',
                     'Package' => 'Package',
                 ]),
-            Select::make('complaint')->label('Nature of Complaint')
+            Select::make('complaint')->label('Nature of Complaint')->visible(
+                function () {
+                    return $this->label == 'Complaint';
+                }
+            )
                 ->options([
                     'Noise' => 'Noise',
                     'Trash' => 'Trash',
@@ -94,6 +100,26 @@ class InboxList extends Component implements Tables\Contracts\HasTable
             )
         ];
     }
+    public function replyMessage()
+    {
+        $this->validate([
+            'reply_messages' => 'required'
+        ]);
+
+        Message::create([
+            'user_id' => auth()->user()->id,
+            'receiver_id' => 1,
+            'resident_name' => auth()->user()->name,
+            'complainee_unit' => auth()->user()->user_information->unit_number,
+            'label_type' => $this->message_data->label_type,
+            'nature_of_complaint' => $this->message_data->nature_of_complaint,
+            'subject' => $this->message_data->label_type,
+            'message' => $this->reply_messages,
+        ]);
+        $this->reply_modal = false;
+        sweetalert()->addSuccess('Message Sent');
+        $this->reset('reply_messages');
+    }
 
     protected function getTableColumns(): array
     {
@@ -118,7 +144,6 @@ class InboxList extends Component implements Tables\Contracts\HasTable
         $this->validate([
             'label' => 'required',
             'subject' => 'required',
-            'complaint' => 'required',
             'message' => 'required',
         ]);
 
@@ -129,7 +154,7 @@ class InboxList extends Component implements Tables\Contracts\HasTable
                 'receiver_id' => 1,
                 'complainee_unit' => auth()->user()->user_information->unit_number,
                 'label_type' => $this->label,
-                'nature_of_complaint' => $this->complaint,
+                'nature_of_complaint' => $this->complaint == null ? null : $this->complaint,
                 'subject' => $this->subject,
                 'message' => $this->message,
             ]);
@@ -152,7 +177,7 @@ class InboxList extends Component implements Tables\Contracts\HasTable
                 'resident_name' => auth()->user()->name,
                 'complainee_unit' => auth()->user()->user_information->unit_number,
                 'label_type' => $this->label,
-                'nature_of_complaint' => $this->complaint,
+                'nature_of_complaint' => $this->complaint == null ? null : $this->complaint,
                 'subject' => $this->subject,
                 'message' => $this->message,
             ]);

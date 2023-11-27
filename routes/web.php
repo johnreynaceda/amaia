@@ -53,6 +53,19 @@ Route::prefix('administrator')->middleware(['auth', 'verified'])->group(function
     Route::get('/announcement', function () {
         return view('admin.announcement');
     })->name('admin.announcement');
+    Route::get('/users', function () {
+        return view('admin.users');
+    })->name('admin.users');
+    Route::get('/unit-owner', function () {
+        return view('admin.unit-owner');
+    })->name('admin.unit-owner');
+    Route::get('/tenant', function () {
+        return view('admin.tenant');
+    })->name('admin.tenant');
+
+    Route::get('/reports', function () {
+        return view('admin.reports');
+    })->name('admin.reports');
 
 
 });

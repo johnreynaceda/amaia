@@ -14,8 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('amenity_id');
-            $table->date('request_date');
-            $table->time('preffered_time');
+            $table->dateTime('request_date');
             $table->longText('remark');
             $table->integer('no_of_person');
             $table->string('status')->default('pending');

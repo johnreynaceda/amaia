@@ -166,7 +166,7 @@
                 slides-per-view="auto" coverflow-effect-rotate="50" coverflow-effect-stretch="0"
                 coverflow-effect-depth="100" coverflow-effect-modifier="1" coverflow-effect-slide-shadows="true">
                 <swiper-slide>
-                    <img src="{{ asset('images/announcement/slide1.png') }}" />
+                    <img src="{{ asset('images/announcement/slide1.jpg') }}" />
                 </swiper-slide>
                 <swiper-slide>
                     <img src="{{ asset('images/announcement/slide2.png') }}" />
@@ -252,9 +252,9 @@
                 <h1 class="text-4xl text-center uppercase my-5 text-gray-800 font-bold">NEWSLETTER
                 </h1>
                 <img src="{{ asset('images/announcement/announcement3.png') }}" class="w-full" alt="">
-                <h1 class="text-4xl text-center uppercase my-5 text-gray-800 font-bold">COMMUNITY FORMS
-                </h1>
-                <div class="flex mt-5 space-x-2 items-start ">
+                {{-- <h1 class="text-4xl text-center uppercase my-5 text-gray-800 font-bold">COMMUNITY FORMS
+                </h1> --}}
+                {{-- <div class="flex mt-5 space-x-2 items-start ">
                     <svg class="2xl:h-20 2xl:w-20 h-20 w-20 text-red-600" viewBox="0 0 48 48" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -288,8 +288,8 @@
                             existing damages.
                         </p>
                     </div>
-                </div>
-                <div class="flex mt-5 space-x-2 items-start ">
+                </div> --}}
+                {{-- <div class="flex mt-5 space-x-2 items-start ">
                     <svg class="2xl:h-20 2xl:w-20 h-20 w-20 text-red-600" viewBox="0 0 48 48" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -321,7 +321,7 @@
                             resident's unit for maintenance, repairs, or inspections.
                         </p>
                     </div>
-                </div>
+                </div> --}}
                 <h1 class="text-4xl text-center uppercase my-5 text-gray-800 font-bold">CONTACT HOTLINES
                 </h1>
                 <img src="{{ asset('images/announcement/announcement4.png') }}" class="w-full" alt="">
